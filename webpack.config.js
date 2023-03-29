@@ -1,44 +1,38 @@
 const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
 	entry: "./src/index.js",
 	output: {
-		filename: "main.js",
+		filename: "[name].[contenthash].js",
 		path: path.resolve(__dirname, "dist"),
+		clean: true,
 	},
-	mode: "production",
+	plugins: [
+		new HtmlWebpackPlugin({
+			template: "src/index.html",
+		}),
+		new MiniCssExtractPlugin(),
+	],
+	mode: "development",
 	module: {
 		rules: [
 			{
-				test: /\.jsx?$/,
-				exclude: ["node_modules"],
-				use: ["babel-loader"],
-			},
-			{
-				test: /\.css$/,
-				use: ["style-loader", "css-loader"],
-			},
-			{
-				test: /\.gif$/,
-				type: "asset/inline",
-			},
-			{
-				test: /\.(ttf|eot|svg)$/,
-				type: "asset/resource",
+				test: /\.s[ac]ss$/i,
+				use: [
+					// Creates `style` nodes from JS strings
+					"style-loader",
+					// Translates CSS into CommonJS
+					"css-loader",
+					// Compiles Sass to CSS
+					"sass-loader",
+				],
+				use: [MiniCssExtractPlugin.loader, "css-loader"],
 			},
 		],
 	},
-	resolve: {
-		alias: {
-			config$: "./configs/app-config.js",
-			react: "./vendor/react-master",
-		},
-		extensions: [".js", ".jsx"],
-		modules: [
-			"node_modules",
-			"bower_components",
-			"shared",
-			"/shared/vendor/modules",
-		],
+	devServer: {
+		static: "./dist",
 	},
 };
