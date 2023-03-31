@@ -51,3 +51,18 @@ describe("ship times hit", () => {
 		expect(cruiser.timesHit).toBe(1);
 	});
 });
+
+describe("ship sunk", () => {
+	it("should return carrier sunk to false when hit 0 times", () => {
+		carrier.hit();
+		expect(carrier.isSunk()).toBe(false);
+	});
+
+	it("should return battleship sunk to true when hit 4 times", () => {
+		battleship.hit();
+		battleship.hit();
+		battleship.hit();
+		battleship.hit();
+		expect(battleship.isSunk()).toBe(true);
+	});
+});
