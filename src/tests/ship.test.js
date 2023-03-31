@@ -1,22 +1,53 @@
 import Ship from "../game-logic/ship";
-let ship;
-beforeEach(() => (ship = new Ship()));
+let carrier, battleship, cruiser, submarine, destroyer;
+beforeEach(() => {
+	carrier = new Ship(5);
+	battleship = new Ship(4);
+	cruiser = new Ship(3);
+	submarine = new Ship(3);
+	destroyer = new Ship(2);
+});
 
-describe("ship size", () => {
-	console.log(ship);
-	it("carrier size should be 5", () => {
-		expect(ship.carrier.size).toBe(5);
+describe("ship length", () => {
+	it("should set carrier length to 5", () => {
+		expect(carrier.length).toBe(5);
 	});
-	it("battleship size should be 4", () => {
-		expect(ship.battleship.size).toBe(4);
+	it("should set battleship length to 4", () => {
+		expect(battleship.length).toBe(4);
 	});
-	it("cruiser size should be 3", () => {
-		expect(ship.cruiser.size).toBe(3);
+	it("should set cruiser length to 3", () => {
+		expect(cruiser.length).toBe(3);
 	});
-	it("submarine size should be 3", () => {
-		expect(ship.submarine.size).toBe(3);
+	it("should set submarine length to 3", () => {
+		expect(submarine.length).toBe(3);
 	});
-	it("destroyer size should be 2", () => {
-		expect(ship.destroyer.size).toBe(2);
+	it("should set destroyer length to 2", () => {
+		expect(destroyer.length).toBe(2);
+	});
+});
+
+describe("ship times hit", () => {
+	it("should initialize carrier timesHit property to 0", () => {
+		expect(carrier.timesHit).toBe(0);
+	});
+	it("should increment battleship timesHit to 4", () => {
+		battleship.hit();
+		battleship.hit();
+		battleship.hit();
+		battleship.hit();
+		expect(battleship.timesHit).toBe(4);
+	});
+	it("should limit submarine timesHit to 3", () => {
+		submarine.hit();
+		submarine.hit();
+		submarine.hit();
+		submarine.hit();
+
+		expect(submarine.timesHit).toBe(3);
+	});
+
+	it("should increment cruiser timesHit to 1 when hit once", () => {
+		cruiser.hit();
+		expect(cruiser.timesHit).toBe(1);
 	});
 });
