@@ -1,11 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1680282848772" clover="3.2.0">
-  <project timestamp="1680282848772" name="All files">
-    <metrics statements="4" coveredstatements="4" conditionals="2" coveredconditionals="2" methods="3" coveredmethods="3" elements="9" coveredelements="9" complexity="0" loc="4" ncloc="4" packages="1" files="1" classes="1"/>
+<coverage generated="1680377566735" clover="3.2.0">
+  <project timestamp="1680377566735" name="All files">
+    <metrics statements="20" coveredstatements="20" conditionals="13" coveredconditionals="13" methods="10" coveredmethods="10" elements="43" coveredelements="43" complexity="0" loc="20" ncloc="20" packages="1" files="2" classes="2"/>
+    <file name="gameboard.js" path="/home/thaddaeus/Desktop/Projects/battleship/src/game-logic/gameboard.js">
+      <metrics statements="16" coveredstatements="16" conditionals="11" coveredconditionals="11" methods="7" coveredmethods="7"/>
+      <line num="3" count="70" type="stmt"/>
+      <line num="7" count="23" type="stmt"/>
+      <line num="11" count="7" type="cond" truecount="5" falsecount="0"/>
+      <line num="15" count="9" type="stmt"/>
+      <line num="16" count="9" type="stmt"/>
+      <line num="17" count="9" type="stmt"/>
+      <line num="18" count="9" type="stmt"/>
+      <line num="19" count="7" type="cond" truecount="2" falsecount="0"/>
+      <line num="23" count="3" type="stmt"/>
+      <line num="26" count="4" type="stmt"/>
+      <line num="28" count="2" type="stmt"/>
+      <line num="33" count="9" type="cond" truecount="2" falsecount="0"/>
+      <line num="35" count="4" type="stmt"/>
+      <line num="36" count="4" type="stmt"/>
+      <line num="37" count="15" type="stmt"/>
+      <line num="39" count="4" type="stmt"/>
+    </file>
     <file name="ship.js" path="/home/thaddaeus/Desktop/Projects/battleship/src/game-logic/ship.js">
       <metrics statements="4" coveredstatements="4" conditionals="2" coveredconditionals="2" methods="3" coveredmethods="3"/>
-      <line num="3" count="55" type="stmt"/>
-      <line num="4" count="55" type="stmt"/>
+      <line num="3" count="90" type="stmt"/>
+      <line num="4" count="90" type="stmt"/>
       <line num="8" count="14" type="cond" truecount="2" falsecount="0"/>
       <line num="12" count="2" type="stmt"/>
     </file>
