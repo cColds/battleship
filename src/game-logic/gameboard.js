@@ -9,8 +9,7 @@ export default class Gameboard {
 	isValidShipPlacement(ship, [row, col]) {
 		const start = this.isHorizontal() ? col : row;
 		const end = this.isHorizontal() ? col + ship.length : row + ship.length;
-		console.log({ start, end, ship });
-		for (let i = 0; start + i < end; i++) {
+		for (let i = 0; start + i < end; i += 1) {
 			if (this.isHorizontal()) {
 				if (this.board[row][col + i] === null) continue;
 			} else if (this.board[row + i][col] === null) continue;
@@ -44,12 +43,13 @@ export default class Gameboard {
 
 		let i = ship.length;
 
-		while (i--) {
+		while (i) {
 			if (this.isHorizontal()) {
 				this.board[row][col + i] = ".";
 			} else {
 				this.board[row + i][col] = ".";
 			}
+			i -= 1;
 		}
 	}
 }

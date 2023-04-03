@@ -1,5 +1,8 @@
+/* eslint-disable */
+
 import Gameboard from "../game-logic/gameboard";
 import Ship from "../game-logic/ship";
+
 let gameboard, carrier, battleship, submarine, destroyer;
 
 beforeEach(() => {
