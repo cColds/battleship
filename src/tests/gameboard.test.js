@@ -1,12 +1,9 @@
-/* eslint-disable */
-
 import Gameboard from "../game-logic/gameboard";
 import Ship from "../game-logic/ship";
 
-let gameboard, carrier, battleship, submarine, destroyer;
+let carrier, battleship, submarine, destroyer;
 
 beforeEach(() => {
-	gameboard = new Gameboard();
 	carrier = new Ship(5);
 	battleship = new Ship(4);
 	submarine = new Ship(3);
@@ -14,6 +11,12 @@ beforeEach(() => {
 });
 
 describe("gameboard place ship at coordinates", () => {
+	let gameboard;
+
+	beforeEach(() => {
+		gameboard = new Gameboard();
+	});
+
 	describe("gameboard horizontal orientation", () => {
 		it("should place carrier of length 5 at [9, 5]", () => {
 			expect(gameboard.canPlaceShip(carrier, [9, 5])).toBe(true);
@@ -44,8 +47,7 @@ describe("gameboard place ship at coordinates", () => {
 	});
 
 	describe("gameboard vertical orientation", () => {
-		let gameboard = new Gameboard();
-		beforeAll(() => {
+		beforeEach(() => {
 			gameboard.orientation = "vertical";
 		});
 

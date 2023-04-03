@@ -12,5 +12,6 @@ module.exports = {
 	},
 	rules: {
 		"no-continue": "off",
+		"one-var": "off",
 	},
 };

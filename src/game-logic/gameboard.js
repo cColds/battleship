@@ -28,14 +28,10 @@ export default class Gameboard {
 	}
 
 	canPlaceShip(ship, [row, col]) {
-		if (
-			this.isOutOfBounds(ship, [row, col]) ||
-			!this.isValidShipPlacement(ship, [row, col])
-		) {
-			return false;
-		}
-
-		return true;
+		return (
+			!this.isOutOfBounds(ship, [row, col]) &&
+			this.isValidShipPlacement(ship, [row, col])
+		);
 	}
 
 	placeShip(ship, [row, col]) {
