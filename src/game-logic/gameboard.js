@@ -41,9 +41,9 @@ export default class Gameboard {
 
 		while (i) {
 			if (this.isHorizontal()) {
-				this.board[row][col + i] = ".";
+				this.board[row][col + i] = ship;
 			} else {
-				this.board[row + i][col] = ".";
+				this.board[row + i][col] = ship;
 			}
 			i -= 1;
 		}

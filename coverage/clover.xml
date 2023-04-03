@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1680503136695" clover="3.2.0">
-  <project timestamp="1680503136695" name="All files">
-    <metrics statements="25" coveredstatements="23" conditionals="25" coveredconditionals="22" methods="10" coveredmethods="8" elements="60" coveredelements="53" complexity="0" loc="25" ncloc="25" packages="1" files="2" classes="2"/>
+<coverage generated="1680503712897" clover="3.2.0">
+  <project timestamp="1680503712897" name="All files">
+    <metrics statements="21" coveredstatements="21" conditionals="23" coveredconditionals="22" methods="7" coveredmethods="7" elements="51" coveredelements="50" complexity="0" loc="21" ncloc="21" packages="1" files="1" classes="1"/>
     <file name="gameboard.js" path="/home/thaddaeus/Desktop/Projects/battleship/src/game-logic/gameboard.js">
       <metrics statements="21" coveredstatements="21" conditionals="23" coveredconditionals="22" methods="7" coveredmethods="7"/>
       <line num="3" count="160" type="stmt"/>
@@ -25,13 +25,6 @@
       <line num="44" count="8" type="stmt"/>
       <line num="46" count="8" type="stmt"/>
       <line num="48" count="16" type="stmt"/>
-    </file>
-    <file name="ship.js" path="/home/thaddaeus/Desktop/Projects/battleship/src/game-logic/ship.js">
-      <metrics statements="4" coveredstatements="2" conditionals="2" coveredconditionals="0" methods="3" coveredmethods="1"/>
-      <line num="3" count="64" type="stmt"/>
-      <line num="4" count="64" type="stmt"/>
-      <line num="8" count="0" type="cond" truecount="0" falsecount="2"/>
-      <line num="12" count="0" type="stmt"/>
     </file>
   </project>
 </coverage>
