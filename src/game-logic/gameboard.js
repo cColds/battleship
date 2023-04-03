@@ -1,41 +1,55 @@
 export default class Gameboard {
 	constructor() {
 		this.board = Array.from({ length: 10 }, () => Array(10).fill(null));
+		this.orientation = "horizontal";
 	}
 
-	isEveryCellValid(shipCells) {
-		return shipCells.every((cell) => cell === null);
+	isHorizontal = () => this.orientation === "horizontal";
+
+	isValidShipPlacement(ship, [row, col]) {
+		const start = this.isHorizontal() ? col : row;
+		const end = this.isHorizontal() ? col + ship.length : row + ship.length;
+		console.log({ start, end, ship });
+		for (let i = 0; start + i < end; i++) {
+			if (this.isHorizontal()) {
+				if (this.board[row][col + i] === null) continue;
+			} else if (this.board[row + i][col] === null) continue;
+
+			return false;
+		}
+
+		return true;
 	}
 
-	isOutOfBounds(row, col, end) {
+	isOutOfBounds(ship, [row, col]) {
+		const end = this.isHorizontal() // add - 1 because ship should start at col/row
+			? col + ship.length - 1
+			: row + ship.length - 1;
 		return row < 0 || row > 9 || col < 0 || col > 9 || end > 9;
 	}
 
-	canPlaceShip(ship, col, row) {
-		const start = col;
-		const end = ship.length + col;
-		try {
-			const shipCells = this.board[row].slice(start, end + 1);
-			if (
-				this.isOutOfBounds(row, col, end) ||
-				!this.isEveryCellValid(shipCells)
-			) {
-				return false;
-			}
-
-			return true;
-		} catch {
+	canPlaceShip(ship, [row, col]) {
+		if (
+			this.isOutOfBounds(ship, [row, col]) ||
+			!this.isValidShipPlacement(ship, [row, col])
+		) {
 			return false;
 		}
+
+		return true;
 	}
 
 	placeShip(ship, [row, col]) {
-		if (!this.canPlaceShip(ship, col, row)) return false;
+		if (!this.canPlaceShip(ship, [row, col])) return;
 
 		let i = ship.length;
+
 		while (i--) {
-			this.board[row][col + i] = ".";
+			if (this.isHorizontal()) {
+				this.board[row][col + i] = ".";
+			} else {
+				this.board[row + i][col] = ".";
+			}
 		}
-		return true;
 	}
 }
