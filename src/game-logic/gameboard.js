@@ -4,11 +4,16 @@ export default class Gameboard {
 	constructor() {
 		this.board = Array.from({ length: 10 }, () => Array(10).fill(null));
 		this.orientation = "horizontal";
+		this.ships = [];
 	}
 
 	isHorizontal = () => this.orientation === "horizontal";
 
-	isValidShipPlacement(ship, [row, col]) {
+	areAllShipsSunk() {
+		return this.ships.every((ship) => ship.isSunk());
+	}
+
+	areAllCellsAvailable(ship, [row, col]) {
 		const start = this.isHorizontal() ? col : row;
 		const end = this.isHorizontal() ? col + ship.length : row + ship.length;
 		for (let i = 0; start + i < end; i += 1) {
@@ -32,7 +37,7 @@ export default class Gameboard {
 	canPlaceShip(ship, [row, col]) {
 		return (
 			!this.isOutOfBounds(ship, [row, col]) &&
-			this.isValidShipPlacement(ship, [row, col])
+			this.areAllCellsAvailable(ship, [row, col])
 		);
 	}
 
@@ -49,6 +54,8 @@ export default class Gameboard {
 			}
 			i += 1;
 		}
+
+		this.ships.push(ship);
 	}
 
 	isHit([row, col]) {
@@ -63,7 +70,7 @@ export default class Gameboard {
 			return false;
 		}
 
-		if (this.board[row][col] === "hit") return false;
+		if (this.board[row[col] === "hit"]) return false;
 
 		this.board[row][col].hit();
 		this.board[row][col] = "hit";
