@@ -1,10 +1,6 @@
 import Ship from "../game-logic/ship";
 
-let carrier;
-let battleship;
-let cruiser;
-let submarine;
-let destroyer;
+let carrier, battleship, cruiser, submarine, destroyer;
 
 beforeEach(() => {
 	carrier = new Ship(5);

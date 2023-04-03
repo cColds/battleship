@@ -1,3 +1,5 @@
+import Ship from "./ship";
+
 export default class Gameboard {
 	constructor() {
 		this.board = Array.from({ length: 10 }, () => Array(10).fill(null));
@@ -37,15 +39,35 @@ export default class Gameboard {
 	placeShip(ship, [row, col]) {
 		if (!this.canPlaceShip(ship, [row, col])) return;
 
-		let i = ship.length;
+		let i = 0;
 
-		while (i) {
+		while (i < ship.length) {
 			if (this.isHorizontal()) {
 				this.board[row][col + i] = ship;
 			} else {
 				this.board[row + i][col] = ship;
 			}
-			i -= 1;
+			i += 1;
 		}
+	}
+
+	isHit([row, col]) {
+		return this.board[row][col] instanceof Ship;
+	}
+
+	receiveAttack([row, col]) {
+		if (row < 0 || row > 9 || col < 0 || col > 9) return false;
+
+		if (!this.isHit([row, col])) {
+			this.board[row][col] = "miss";
+			return false;
+		}
+
+		if (this.board[row][col] === "hit") return false;
+
+		this.board[row][col].hit();
+		this.board[row][col] = "hit";
+
+		return true;
 	}
 }

@@ -85,9 +85,62 @@ describe("gameboard place ship at coordinates", () => {
 			expect(gameboard.canPlaceShip(battleship, [4, 3])).toBe(false);
 		});
 	});
-
-	// it.todo("gameboard vertical and horizontal orientation");
-	// it.todo("gameboard adjacent squares");
 });
 
-// should not place ship if starting position is valid but ending position overflows board
+describe("gameboard attack cell", () => {
+	let gameboard;
+
+	beforeEach(() => {
+		gameboard = new Gameboard();
+	});
+
+	it("should attack ship and increment timesHit by 1", () => {
+		gameboard.placeShip(carrier, [0, 3]);
+		expect(gameboard.receiveAttack([0, 3])).toBe(true);
+		expect(gameboard.board[0][5].timesHit).toBe(1);
+	});
+
+	it("should attack ship and increment timesHit by 1", () => {
+		gameboard.placeShip(carrier, [5, 5]);
+		expect(gameboard.receiveAttack([5, 9])).toBe(true);
+		expect(gameboard.board[5][5].timesHit).toBe(1);
+	});
+
+	it("should only attack same ship cell once", () => {
+		gameboard.placeShip(carrier, [3, 5]);
+		gameboard.receiveAttack([3, 5]);
+		expect(gameboard.receiveAttack([3, 5])).toBe(false);
+		expect(gameboard.board[3][9].timesHit).toBe(1);
+	});
+
+	it("should only attack same ship cell once", () => {
+		gameboard.placeShip(carrier, [1, 2]);
+		gameboard.receiveAttack([1, 2]);
+		gameboard.receiveAttack([1, 3]);
+		gameboard.receiveAttack([1, 4]);
+		gameboard.receiveAttack([1, 5]);
+		gameboard.receiveAttack([1, 6]);
+
+		expect(gameboard.receiveAttack([1, 6])).toBe(false);
+	});
+
+	it("should miss attack", () => {
+		gameboard.placeShip(carrier, [7, 2]);
+		expect(gameboard.receiveAttack([5, 6])).toBe(false);
+	});
+
+	it("should miss attack", () => {
+		gameboard.placeShip(carrier, [4, 3]);
+		expect(gameboard.receiveAttack([3, 5])).toBe(false);
+	});
+
+	it("should miss attack on invalid coordinates", () => {
+		gameboard.placeShip(carrier, [0, 3]);
+		expect(gameboard.receiveAttack([-1, 3])).toBe(false);
+	});
+
+	it("should miss attack on invalid coordinates", () => {
+		gameboard.placeShip(carrier, [4, 2]);
+		expect(gameboard.receiveAttack([0, 10])).toBe(false);
+	});
+});
