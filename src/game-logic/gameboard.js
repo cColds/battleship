@@ -71,7 +71,7 @@ export default class Gameboard {
 			return false;
 		}
 
-		if (this.board[row[col] === "hit"]) return false;
+		if (this.board[[row][col]] === "hit") return false;
 
 		this.board[row][col].hit();
 		this.board[row][col] = "hit";

@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1680681237411" clover="3.2.0">
-  <project timestamp="1680681237411" name="All files">
-    <metrics statements="77" coveredstatements="76" conditionals="61" coveredconditionals="55" methods="24" coveredmethods="24" elements="162" coveredelements="155" complexity="0" loc="77" ncloc="77" packages="2" files="4" classes="4"/>
+<coverage generated="1680681890219" clover="3.2.0">
+  <project timestamp="1680681890219" name="All files">
+    <metrics statements="77" coveredstatements="76" conditionals="61" coveredconditionals="56" methods="24" coveredmethods="24" elements="162" coveredelements="156" complexity="0" loc="77" ncloc="77" packages="2" files="4" classes="4"/>
     <package name="game-logic">
-      <metrics statements="68" coveredstatements="68" conditionals="55" coveredconditionals="52" methods="21" coveredmethods="21"/>
+      <metrics statements="68" coveredstatements="68" conditionals="55" coveredconditionals="53" methods="21" coveredmethods="21"/>
       <file name="gameboard.js" path="/home/thaddaeus/Desktop/Projects/battleship/src/game-logic/gameboard.js">
         <metrics statements="34" coveredstatements="34" conditionals="33" coveredconditionals="31" methods="11" coveredmethods="11"/>
         <line num="6" count="300" type="stmt"/>
         <line num="7" count="30" type="stmt"/>
         <line num="8" count="30" type="stmt"/>
-        <line num="11" count="5363" type="stmt"/>
+        <line num="11" count="5337" type="stmt"/>
         <line num="14" count="6" type="stmt"/>
         <line num="18" count="1035" type="cond" truecount="2" falsecount="0"/>
         <line num="19" count="1035" type="cond" truecount="2" falsecount="0"/>
         <line num="20" count="1035" type="stmt"/>
-        <line num="21" count="3136" type="cond" truecount="2" falsecount="0"/>
-        <line num="22" count="3096" type="cond" truecount="2" falsecount="0"/>
+        <line num="21" count="3110" type="cond" truecount="2" falsecount="0"/>
+        <line num="22" count="3070" type="cond" truecount="2" falsecount="0"/>
         <line num="23" count="40" type="cond" truecount="2" falsecount="0"/>
-        <line num="25" count="329" type="stmt"/>
-        <line num="28" count="706" type="stmt"/>
+        <line num="25" count="323" type="stmt"/>
+        <line num="28" count="712" type="stmt"/>
         <line num="32" count="44" type="cond" truecount="2" falsecount="0"/>
         <line num="35" count="44" type="cond" truecount="5" falsecount="0"/>
         <line num="39" count="44" type="stmt"/>
@@ -68,18 +68,18 @@
         <line num="42" count="1000" type="stmt"/>
         <line num="43" count="1000" type="cond" truecount="2" falsecount="0"/>
         <line num="45" count="1000" type="cond" truecount="2" falsecount="0"/>
-        <line num="46" count="500" type="cond" truecount="2" falsecount="0"/>
-        <line num="47" count="500" type="cond" truecount="2" falsecount="0"/>
-        <line num="49" count="500" type="cond" truecount="2" falsecount="0"/>
-        <line num="50" count="500" type="cond" truecount="2" falsecount="0"/>
+        <line num="46" count="600" type="cond" truecount="2" falsecount="0"/>
+        <line num="47" count="600" type="cond" truecount="2" falsecount="0"/>
+        <line num="49" count="400" type="cond" truecount="2" falsecount="0"/>
+        <line num="50" count="400" type="cond" truecount="2" falsecount="0"/>
       </file>
       <file name="ship.js" path="/home/thaddaeus/Desktop/Projects/battleship/src/game-logic/ship.js">
-        <metrics statements="5" coveredstatements="5" conditionals="2" coveredconditionals="1" methods="3" coveredmethods="3"/>
-        <line num="3" count="117" type="stmt"/>
-        <line num="4" count="117" type="stmt"/>
-        <line num="5" count="117" type="stmt"/>
-        <line num="9" count="26" type="cond" truecount="1" falsecount="1"/>
-        <line num="13" count="6" type="stmt"/>
+        <metrics statements="5" coveredstatements="5" conditionals="2" coveredconditionals="2" methods="3" coveredmethods="3"/>
+        <line num="3" count="172" type="stmt"/>
+        <line num="4" count="172" type="stmt"/>
+        <line num="5" count="172" type="stmt"/>
+        <line num="9" count="40" type="cond" truecount="2" falsecount="0"/>
+        <line num="13" count="8" type="stmt"/>
       </file>
     </package>
     <package name="tests">
