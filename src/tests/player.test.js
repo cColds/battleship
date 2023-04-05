@@ -40,8 +40,3 @@ describe("player vs ai", () => {
 		// ai.receiveAttack()
 	});
 });
-
-// if turn is null, set it to player by default, else set it to the other player
-// if turn is ai, grab a random legal move (not out of bounds or hit already) and call player's board with receiveAttack(randomMove)
-// else, call ai's board with receiveAttack(yourMove)
-// if all ships have sunk, end game and set player who made the last move as the winner

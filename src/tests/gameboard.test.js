@@ -1,5 +1,6 @@
 import Gameboard from "../game-logic/gameboard";
 import Ship from "../game-logic/ship";
+import sinkAllShips, { sinkShip } from "./test-helpers";
 
 let carrier, battleship, submarine, destroyer;
 
@@ -152,30 +153,12 @@ describe("gameboard check if ships are all sunk", () => {
 		gameboard.orientation = "vertical";
 	});
 
-	function sinkShip(ship, [row, col]) {
-		const start = gameboard.orientation === "horizontal" ? col : row;
-		const end =
-			gameboard.orientation === "horizontal"
-				? col + ship.length
-				: row + ship.length;
-		for (let i = 0; start + i < end; i += 1) {
-			if (gameboard.orientation === "horizontal") {
-				gameboard.receiveAttack(gameboard.board[row][col + i]);
-			} else {
-				gameboard.board[row + i][col].hit();
-				gameboard.board[row + i][col] = "hit";
-			}
-		}
-	}
-
 	it("should report all ships sunk as true", () => {
 		gameboard.placeShip(carrier, [3, 2]);
 		gameboard.placeShip(battleship, [5, 5]);
 		gameboard.placeShip(submarine, [0, 2]);
 
-		sinkShip(carrier, [3, 2]);
-		sinkShip(battleship, [5, 5]);
-		sinkShip(submarine, [0, 2]);
+		sinkAllShips(gameboard.ships, gameboard);
 
 		expect(gameboard.areAllShipsSunk()).toBe(true);
 	});
@@ -188,7 +171,7 @@ describe("gameboard check if ships are all sunk", () => {
 		gameboard.placeShip(battleship, [5, 5]);
 		gameboard.placeShip(submarine, [0, 2]);
 
-		sinkShip(battleship, [5, 5]);
+		sinkShip(battleship, [5, 5], gameboard);
 		gameboard.receiveAttack([0, 2]);
 		expect(gameboard.areAllShipsSunk()).toBe(false);
 	});
