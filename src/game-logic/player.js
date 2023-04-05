@@ -39,7 +39,7 @@ export default class Player {
 					this.gameboard.placeShip(ship, [randomX, randomY]);
 				}
 				const isValidShipPlacement =
-					this.gameboard.areAllCellsAvailable(ship, [row, col]);
+					this.gameboard.isValidShipPlacement(ship, [row, col]);
 				if (isValidShipPlacement) validCoords.push([row, col]);
 
 				if (randomOrientation === "horizontal") {

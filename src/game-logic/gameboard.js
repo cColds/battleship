@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import Ship from "./ship";
 
 export default class Gameboard {
@@ -13,7 +14,7 @@ export default class Gameboard {
 		return this.ships.every((ship) => ship.isSunk());
 	}
 
-	areAllCellsAvailable(ship, [row, col]) {
+	isValidShipPlacement(ship, [row, col]) {
 		const start = this.isHorizontal() ? col : row;
 		const end = this.isHorizontal() ? col + ship.length : row + ship.length;
 		for (let i = 0; start + i < end; i += 1) {
@@ -37,7 +38,7 @@ export default class Gameboard {
 	canPlaceShip(ship, [row, col]) {
 		return (
 			!this.isOutOfBounds(ship, [row, col]) &&
-			this.areAllCellsAvailable(ship, [row, col])
+			this.isValidShipPlacement(ship, [row, col])
 		);
 	}
 
@@ -45,7 +46,7 @@ export default class Gameboard {
 		if (!this.canPlaceShip(ship, [row, col])) return;
 
 		let i = 0;
-
+		ship.coords = [row, col];
 		while (i < ship.length) {
 			if (this.isHorizontal()) {
 				this.board[row][col + i] = ship;

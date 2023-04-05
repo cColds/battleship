@@ -30,8 +30,14 @@ beforeEach(() => {
 
 describe("player vs ai", () => {
 	it("should make move for ai after player attacks", () => {
-		// ai.receiveAttack([3, 2]);
-		// expect(player.receiveAttack(player.getRandomMove())).toBe(true);
+		player.placeAllShipsRandomly();
+		ai.placeAllShipsRandomly();
+
+		// console.log(ai.gameboard.receiveAttack([1, 2]));
+		console.log(ai.gameboard);
+		console.log(player.gameboard);
+		console.log(ai.gameboard.ships);
+		// ai.receiveAttack()
 	});
 });
 
