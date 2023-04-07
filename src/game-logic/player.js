@@ -53,8 +53,32 @@ export default class Player {
 		});
 	}
 
-	// attack([row, col], enemy) {
-	// 	enemy.receiveAttack([row, col])
-	// this.gameboard.receiveAttack([row, col])
-	// }
+	static getValidCoords(enemy) {
+		const enemyBoard = enemy.gameboard.board;
+		const validCoords = [];
+		for (let row = 0; row < 10; row += 1) {
+			for (let col = 0; col < 10; col += 1) {
+				if (enemyBoard[row][col] === null) {
+					validCoords.push([row, col]);
+				}
+			}
+		}
+
+		return validCoords;
+	}
+
+	attack([row, col], enemy) {
+		enemy.gameboard.receiveAttack([row, col]);
+		Player.makeComputerAttack(this);
+	}
+
+	static makeComputerAttack(player) {
+		const randomValidCoord = Player.getRandomValidCoords(
+			Player.getValidCoords(player)
+		);
+
+		player.gameboard.receiveAttack(randomValidCoord);
+
+		return randomValidCoord;
+	}
 }

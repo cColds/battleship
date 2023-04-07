@@ -44,11 +44,19 @@ describe("player/ai", () => {
 		expect(areAllUniqueShipCoords).toStrictEqual(shipsCoords);
 		expect(shipsCoords.length).toBe(5);
 	});
-	// it("should make player attack and make ai attack after player", () => {
-	// 	// player.placeAllShipsRandomly();
-	// 	// ai.placeAllShipsRandomly();
-	// 	const randomCoord = player.getRandomCoord();
-	// 	player.attack([3, 5], ai);
-	// });
-	// it("should make random attack for ai", () => {});
+	it("should make player attack", () => {
+		player.placeAllShipsRandomly();
+		ai.placeAllShipsRandomly();
+		player.attack([3, 5], ai);
+		expect(ai.gameboard.board[3][5]).not.toBe(null);
+	});
+
+	it("should make random attack for ai", () => {
+		player.placeAllShipsRandomly();
+		ai.placeAllShipsRandomly();
+
+		const [computerRow, computerCol] = Player.makeComputerAttack(player);
+		const playerBoard = player.gameboard.board;
+		expect(playerBoard[computerRow][computerCol]).not.toBe(null);
+	});
 });
