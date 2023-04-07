@@ -52,4 +52,9 @@ export default class Player {
 			}
 		});
 	}
+
+	// attack([row, col], enemy) {
+	// 	enemy.receiveAttack([row, col])
+	// this.gameboard.receiveAttack([row, col])
+	// }
 }

@@ -28,15 +28,27 @@ beforeEach(() => {
 	);
 });
 
-describe("player vs ai", () => {
-	it("should make move for ai after player attacks", () => {
+describe("player/ai", () => {
+	it("should place ships randomly", () => {
 		player.placeAllShipsRandomly();
-		ai.placeAllShipsRandomly();
 
-		// console.log(ai.gameboard.receiveAttack([1, 2]));
-		console.log(ai.gameboard);
-		console.log(player.gameboard);
-		console.log(ai.gameboard.ships);
-		// ai.receiveAttack()
+		const { ships } = player.gameboard;
+
+		const cantPlaceShips = ships.every(
+			(ship) => !player.gameboard.canPlaceShip(ship, ship.coords)
+		);
+		const shipsCoords = ships.map((ship) => JSON.stringify(ship.coords));
+		const areAllUniqueShipCoords = Array.from(new Set(shipsCoords));
+
+		expect(cantPlaceShips).toBe(true);
+		expect(areAllUniqueShipCoords).toStrictEqual(shipsCoords);
+		expect(shipsCoords.length).toBe(5);
 	});
+	// it("should make player attack and make ai attack after player", () => {
+	// 	// player.placeAllShipsRandomly();
+	// 	// ai.placeAllShipsRandomly();
+	// 	const randomCoord = player.getRandomCoord();
+	// 	player.attack([3, 5], ai);
+	// });
+	// it("should make random attack for ai", () => {});
 });

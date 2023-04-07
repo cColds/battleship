@@ -11,6 +11,7 @@ beforeEach(() => {
 });
 
 describe("ship length", () => {
+	// should remove cuz private
 	it("should set carrier length to 5", () => {
 		expect(carrier.length).toBe(5);
 	});
