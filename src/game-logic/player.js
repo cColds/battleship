@@ -26,30 +26,19 @@ export default class Player {
 	placeAllShipsRandomly() {
 		const randomShips = Player.shuffleArray(this.ships);
 		randomShips.forEach((ship) => {
-			const randomOrientation = Player.getRandomOrientation();
+			this.gameboard.orientation = Player.getRandomOrientation();
+
 			const validCoords = [];
-
-			let row = 0,
-				col = 0;
-
-			while (row < 10 && col < 10) {
-				if (row === 9 && col === 9) {
-					const [randomX, randomY] =
-						Player.getRandomValidCoords(validCoords);
-					this.gameboard.placeShip(ship, [randomX, randomY]);
-				}
-				const isValidShipPlacement =
-					this.gameboard.isValidShipPlacement(ship, [row, col]);
-				if (isValidShipPlacement) validCoords.push([row, col]);
-
-				if (randomOrientation === "horizontal") {
-					row = col === 9 ? row + 1 : row; // must set row before col because if col is 9, it'll reset to 0 and row won't increment
-					col = col !== 9 ? col + 1 : 0;
-				} else {
-					col = row === 9 ? col + 1 : col; // must set col before row because if row is 9, it'll reset to 0 and col won't increment
-					row = row !== 9 ? row + 1 : 0;
+			for (let row = 0; row < 10; row += 1) {
+				for (let col = 0; col < 10; col += 1) {
+					if (this.gameboard.canPlaceShip(ship, [row, col])) {
+						validCoords.push([row, col]);
+					}
 				}
 			}
+
+			const [randomX, randomY] = Player.getRandomValidCoords(validCoords);
+			this.gameboard.placeShip(ship, [randomX, randomY]);
 		});
 	}
 

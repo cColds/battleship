@@ -31,7 +31,6 @@ beforeEach(() => {
 describe("player/ai", () => {
 	it("should place ships randomly", () => {
 		player.placeAllShipsRandomly();
-
 		const { ships } = player.gameboard;
 
 		const cantPlaceShips = ships.every(

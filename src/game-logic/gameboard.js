@@ -8,37 +8,36 @@ export default class Gameboard {
 		this.ships = [];
 	}
 
+	static isOutOfBounds = ([row, col]) =>
+		row < 0 || row > 9 || col < 0 || col > 9;
+
 	isHorizontal = () => this.orientation === "horizontal";
 
-	areAllShipsSunk() {
-		return this.ships.every((ship) => ship.isSunk());
-	}
+	areAllShipsSunk = () => this.ships.every((ship) => ship.isSunk());
 
-	isValidShipPlacement(ship, [row, col]) {
-		const start = this.isHorizontal() ? col : row;
-		const end = this.isHorizontal() ? col + ship.length : row + ship.length;
-		for (let i = 0; start + i < end; i += 1) {
+	getStartPosition = ([row, col]) => (this.isHorizontal() ? col : row);
+
+	getEndPosition = (ship, [row, col]) =>
+		this.getStartPosition([row, col]) + ship.length - 1;
+
+	isHit = ([row, col]) => this.board[row][col] instanceof Ship;
+
+	isEveryCellValid(ship, [row, col]) {
+		for (let i = 0; i < ship.length; i += 1) {
 			if (this.isHorizontal()) {
 				if (this.board[row][col + i] === null) continue;
 			} else if (this.board[row + i][col] === null) continue;
 
 			return false;
 		}
-
 		return true;
-	}
-
-	isOutOfBounds(ship, [row, col]) {
-		const end = this.isHorizontal() // add - 1 because ship should start at col/row
-			? col + ship.length - 1
-			: row + ship.length - 1;
-		return row < 0 || row > 9 || col < 0 || col > 9 || end > 9;
 	}
 
 	canPlaceShip(ship, [row, col]) {
 		return (
-			!this.isOutOfBounds(ship, [row, col]) &&
-			this.isValidShipPlacement(ship, [row, col])
+			!Gameboard.isOutOfBounds([row, col]) &&
+			this.getEndPosition(ship, [row, col]) < 10 &&
+			this.isEveryCellValid(ship, [row, col])
 		);
 	}
 
@@ -59,12 +58,8 @@ export default class Gameboard {
 		this.ships.push(ship);
 	}
 
-	isHit([row, col]) {
-		return this.board[row][col] instanceof Ship;
-	}
-
 	receiveAttack([row, col]) {
-		if (row < 0 || row > 9 || col < 0 || col > 9) return false;
+		if (Gameboard.isOutOfBounds([row, col])) return false;
 
 		if (!this.isHit([row, col])) {
 			this.board[row][col] = "miss";
