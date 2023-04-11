@@ -4,13 +4,8 @@
   box-sizing: border-box;
 }
 
-body {
-}
-
-header {
-  h1 {
-    text-align: center;
-  }
+header h1 {
+  text-align: center;
 }
 
 .start-game {
@@ -23,9 +18,8 @@ header {
   letter-spacing: 1.5px;
   color: #faf3fa;
   transition: ease-in-out 0.3s;
-
-  &:hover {
-    background-color: rgb(59, 59, 59);
-    transform: scale(1.05);
-  }
 }
+.start-game:hover {
+  background-color: rgb(59, 59, 59);
+  transform: scale(1.05);
+}/*# sourceMappingURL=style.css.map */
