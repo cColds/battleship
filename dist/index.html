@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Battleship</title>
     <link rel="stylesheet" href="./style.css" />
-  <script defer src="main.fdb2493bc4045c544048.js"></script></head>
+  <script defer src="main.db30a54b69b5ee63a331.js"></script></head>
 
   <body>
     <header>
@@ -14,15 +14,23 @@
     </header>
 
     <main>
+      <div class="start-game-container">
+        <label for="player-name-input">Enter player name</label>
+        <input type="text" placeholder="Player" id="player-name-input" />
+        <button class="start-game">Start Game</button>
+      </div>
 
-        <div class="start-game-container active">
-            <label for="player-name-input">Enter player name</label>
-            <input type="text" placeholder="Player" id="player-name-input">
-            <button class="start-game">Start Game</button>
+      <div class="gameboard-container">
+        <div class="player-board-container board-container">
+          <h2 class="board-name">Player</h2>
+          <div class="player-board board"></div>
         </div>
 
-        
+        <div class="ai-board-container board-container">
+          <h2 class="board-name">AI</h2>
+          <div class="ai-board board"></div>
+        </div>
+      </div>
     </main>
-
   </body>
 </html>
