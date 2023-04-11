@@ -1,14 +1,24 @@
 import Gameboard from "../game-logic/gameboard";
 import Ship from "../game-logic/ship";
 import { sinkAllShips, sinkShip } from "./test-helpers";
+import Player from "../game-logic/player";
 
-let carrier, battleship, submarine, destroyer;
+let player, carrier, battleship, cruiser, submarine, destroyer;
 
 beforeEach(() => {
   carrier = new Ship(5);
   battleship = new Ship(4);
+  cruiser = new Ship(3);
   submarine = new Ship(3);
   destroyer = new Ship(2);
+  player = new Player(
+    new Gameboard(),
+    carrier,
+    battleship,
+    cruiser,
+    submarine,
+    destroyer
+  );
 });
 
 describe("gameboard place ship at coordinates", () => {
@@ -185,5 +195,17 @@ describe("gameboard check if ships are all sunk", () => {
     gameboard.receiveAttack([5, 6]);
 
     expect(gameboard.areAllShipsSunk()).toBe(false);
+  });
+});
+
+describe("reset gameboard state", () => {
+  it("should reset gameboard", () => {
+    player.gameboard.orientation = "vertical";
+    player.placeAllShipsRandomly();
+
+    player.gameboard.resetGameboard();
+
+    expect(player.gameboard.orientation).toBe("horizontal");
+    expect(player.gameboard.ships.length).toBe(0);
   });
 });

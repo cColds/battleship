@@ -20,6 +20,12 @@ export default class Gameboard {
 
   isHit = ([row, col]) => this.board[row][col] instanceof Ship;
 
+  resetGameboard() {
+    this.board = Array.from({ length: 10 }, () => Array(10).fill(null));
+    this.ships = [];
+    this.orientation = "horizontal";
+  }
+
   isEveryCellValid(ship, [row, col]) {
     for (let i = 0; i < ship.length; i += 1) {
       if (this.isHorizontal()) {

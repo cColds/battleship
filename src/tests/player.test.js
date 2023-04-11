@@ -31,8 +31,8 @@ beforeEach(() => {
 describe("player/ai", () => {
   it("should place ships randomly", () => {
     player.placeAllShipsRandomly();
-    const { ships } = player.gameboard;
 
+    const { ships } = player.gameboard;
     const cantPlaceShips = ships.every(
       (ship) => !player.gameboard.canPlaceShip(ship, ship.coords)
     );
@@ -43,6 +43,17 @@ describe("player/ai", () => {
     expect(areAllUniqueShipCoords).toStrictEqual(shipsCoords);
     expect(shipsCoords.length).toBe(5);
   });
+
+  it("should be able to place ships randomly more than once", () => {
+    player.placeAllShipsRandomly();
+    const shipCoordsOne = JSON.stringify(player.gameboard.ships);
+    player.placeAllShipsRandomly();
+    const shipCoordsTwo = JSON.stringify(player.gameboard.ships);
+
+    const areShipCoordsEqual = shipCoordsOne === shipCoordsTwo;
+    expect(areShipCoordsEqual).toBe(false);
+  });
+
   it("should make player attack", () => {
     player.placeAllShipsRandomly();
     ai.placeAllShipsRandomly();
