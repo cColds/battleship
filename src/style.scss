@@ -123,7 +123,16 @@ main {
 
  // PLACE SHIPS
 
- .place-ships-container {
+.place-ships-container {
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+ .place-ships-container.active {
+    display: block;
+    opacity: 1;
+    visibility: visible;
 
    .gameboard-container {
     display: flex;

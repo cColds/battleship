@@ -1,1 +1,3 @@
-import "./dom/dom";
+import Dom from "./dom/dom";
+
+Dom.initializeDom();

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Battleship</title>
     <link rel="stylesheet" href="./style.css" />
-  <script defer src="main.b236e40390b800efc710.js"></script></head>
+  <script defer src="main.b93c41990e4c4c332575.js"></script></head>
 
   <body>
     <header>
@@ -14,13 +14,13 @@
     </header>
 
     <main>
-      <div class="start-game-container">
+      <div class="start-game-container active">
         <label for="player-name-input">Enter player name</label>
         <input type="text" placeholder="Player" id="player-name-input" />
         <button class="homepage-start-game">Start Game</button>
       </div>
 
-      <div class="gameboard-container">
+      <div class="gameboard-container battleship-gameboard">
         <div class="player-board-container board-container">
           <h2 class="board-name">Player</h2>
           <div class="player-board board"></div>
@@ -45,7 +45,7 @@
       </div>
 
       <div class="place-ships-container">
-        <div class="gameboard-container active">
+        <div class="gameboard-container place-ships-gameboard">
           <div class="place-ship-hint">Place your carrier</div>
           <button class="rotate-ship">Rotate Ship</button>
           <div class="place-ships-board-container board-container">
