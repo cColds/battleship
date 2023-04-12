@@ -1,24 +1,11 @@
 import Gameboard from "../game-logic/gameboard";
-import Ship from "../game-logic/ship";
 import { sinkAllShips, sinkShip } from "./test-helpers";
 import Player from "../game-logic/player";
 
-let player, carrier, battleship, cruiser, submarine, destroyer;
+let player;
 
 beforeEach(() => {
-  carrier = new Ship(5);
-  battleship = new Ship(4);
-  cruiser = new Ship(3);
-  submarine = new Ship(3);
-  destroyer = new Ship(2);
-  player = new Player(
-    new Gameboard(),
-    carrier,
-    battleship,
-    cruiser,
-    submarine,
-    destroyer
-  );
+  player = new Player();
 });
 
 describe("gameboard place ship at coordinates", () => {
@@ -30,30 +17,30 @@ describe("gameboard place ship at coordinates", () => {
 
   describe("gameboard horizontal orientation", () => {
     it("should place carrier of length 5 at [9, 5]", () => {
-      expect(gameboard.canPlaceShip(carrier, [9, 5])).toBe(true);
+      expect(gameboard.canPlaceShip(player.carrier, [9, 5])).toBe(true);
     });
     it("should place destroyer of length 2 at [4, 7]", () => {
-      expect(gameboard.canPlaceShip(destroyer, [4, 7])).toBe(true);
+      expect(gameboard.canPlaceShip(player.destroyer, [4, 7])).toBe(true);
     });
     it("should not place ship if row is out of bounds at [-1, 0]", () => {
-      expect(gameboard.canPlaceShip(carrier, [-1, 0])).toBe(false);
+      expect(gameboard.canPlaceShip(player.carrier, [-1, 0])).toBe(false);
     });
     it("should not place ship if column is out of bounds at [0, 10]", () => {
-      expect(gameboard.canPlaceShip(carrier, [0, 10])).toBe(false);
+      expect(gameboard.canPlaceShip(player.carrier, [0, 10])).toBe(false);
     });
     it("should not place ship if starting position and ending position are invalid [-1, 10]", () => {
-      expect(gameboard.canPlaceShip(carrier, [-1, 10])).toBe(false);
+      expect(gameboard.canPlaceShip(player.carrier, [-1, 10])).toBe(false);
     });
     it("should not place ship if starting position is valid but not ending position at [0, 6]", () => {
-      expect(gameboard.canPlaceShip(carrier, [0, 6])).toBe(false);
+      expect(gameboard.canPlaceShip(player.carrier, [0, 6])).toBe(false);
     });
     it("should not place ship if other ships occupy the cell", () => {
-      gameboard.placeShip(submarine, [5, 6]);
-      expect(gameboard.canPlaceShip(carrier, [5, 6])).toBe(false);
+      gameboard.placeShip(player.submarine, [5, 6]);
+      expect(gameboard.canPlaceShip(player.carrier, [5, 6])).toBe(false);
     });
     it("should not place ship if other ships occupy the cell", () => {
-      gameboard.placeShip(carrier, [3, 0]);
-      expect(gameboard.canPlaceShip(battleship, [3, 4])).toBe(false);
+      gameboard.placeShip(player.carrier, [3, 0]);
+      expect(gameboard.canPlaceShip(player.battleship, [3, 4])).toBe(false);
     });
   });
 
@@ -63,37 +50,37 @@ describe("gameboard place ship at coordinates", () => {
     });
 
     it("should place carrier of length 5 at [5, 9]", () => {
-      expect(gameboard.canPlaceShip(carrier, [5, 9])).toBe(true);
+      expect(gameboard.canPlaceShip(player.carrier, [5, 9])).toBe(true);
     });
 
     it("should place destroyer of length 2 at [4,7]", () => {
-      expect(gameboard.canPlaceShip(destroyer, [4, 7])).toBe(true);
+      expect(gameboard.canPlaceShip(player.destroyer, [4, 7])).toBe(true);
     });
 
     it("should not place ship if row is out of bounds at [-1, 0]", () => {
-      expect(gameboard.canPlaceShip(carrier, [-1, 0])).toBe(false);
+      expect(gameboard.canPlaceShip(player.carrier, [-1, 0])).toBe(false);
     });
 
     it("should not place ship if column is out of bounds at [0, 10]", () => {
-      expect(gameboard.canPlaceShip(carrier, [0, 10])).toBe(false);
+      expect(gameboard.canPlaceShip(player.carrier, [0, 10])).toBe(false);
     });
 
     it("should not place ship if starting position and ending position are invalid [-1, 10]", () => {
-      expect(gameboard.canPlaceShip(carrier, [-1, 10])).toBe(false);
+      expect(gameboard.canPlaceShip(player.carrier, [-1, 10])).toBe(false);
     });
 
     it("should not place ship if starting position is valid but not ending position at [6, 0]", () => {
-      expect(gameboard.canPlaceShip(carrier, [6, 0])).toBe(false);
+      expect(gameboard.canPlaceShip(player.carrier, [6, 0])).toBe(false);
     });
 
     it("should not place ship if other ships occupy the cell", () => {
-      gameboard.placeShip(submarine, [5, 6]);
-      expect(gameboard.canPlaceShip(carrier, [5, 6])).toBe(false);
+      gameboard.placeShip(player.submarine, [5, 6]);
+      expect(gameboard.canPlaceShip(player.carrier, [5, 6])).toBe(false);
     });
 
     it("should not place ship if other ships occupy the cell", () => {
-      gameboard.placeShip(carrier, [0, 3]);
-      expect(gameboard.canPlaceShip(battleship, [4, 3])).toBe(false);
+      gameboard.placeShip(player.carrier, [0, 3]);
+      expect(gameboard.canPlaceShip(player.battleship, [4, 3])).toBe(false);
     });
   });
 });
@@ -106,26 +93,26 @@ describe("gameboard attack cell", () => {
   });
 
   it("should attack ship and increment timesHit by 1", () => {
-    gameboard.placeShip(carrier, [0, 3]);
+    gameboard.placeShip(player.carrier, [0, 3]);
     expect(gameboard.receiveAttack([0, 3])).toBe(true);
     expect(gameboard.board[0][5].timesHit).toBe(1);
   });
 
   it("should attack ship and increment timesHit by 1", () => {
-    gameboard.placeShip(carrier, [5, 5]);
+    gameboard.placeShip(player.carrier, [5, 5]);
     expect(gameboard.receiveAttack([5, 9])).toBe(true);
     expect(gameboard.board[5][5].timesHit).toBe(1);
   });
 
   it("should only attack same ship cell once", () => {
-    gameboard.placeShip(carrier, [3, 5]);
+    gameboard.placeShip(player.carrier, [3, 5]);
     gameboard.receiveAttack([3, 5]);
     expect(gameboard.receiveAttack([3, 5])).toBe(false);
     expect(gameboard.board[3][9].timesHit).toBe(1);
   });
 
   it("should only attack same ship cell once", () => {
-    gameboard.placeShip(carrier, [1, 2]);
+    gameboard.placeShip(player.carrier, [1, 2]);
     gameboard.receiveAttack([1, 2]);
     gameboard.receiveAttack([1, 3]);
     gameboard.receiveAttack([1, 4]);
@@ -136,22 +123,22 @@ describe("gameboard attack cell", () => {
   });
 
   it("should miss attack", () => {
-    gameboard.placeShip(carrier, [7, 2]);
+    gameboard.placeShip(player.carrier, [7, 2]);
     expect(gameboard.receiveAttack([5, 6])).toBe(false);
   });
 
   it("should miss attack", () => {
-    gameboard.placeShip(carrier, [4, 3]);
+    gameboard.placeShip(player.carrier, [4, 3]);
     expect(gameboard.receiveAttack([3, 5])).toBe(false);
   });
 
   it("should miss attack on invalid coordinates", () => {
-    gameboard.placeShip(carrier, [0, 3]);
+    gameboard.placeShip(player.carrier, [0, 3]);
     expect(gameboard.receiveAttack([-1, 3])).toBe(false);
   });
 
   it("should miss attack on invalid coordinates", () => {
-    gameboard.placeShip(carrier, [4, 2]);
+    gameboard.placeShip(player.carrier, [4, 2]);
     expect(gameboard.receiveAttack([0, 10])).toBe(false);
   });
 });
@@ -164,9 +151,9 @@ describe("gameboard check if ships are all sunk", () => {
   });
 
   it("should report all ships sunk as true", () => {
-    gameboard.placeShip(carrier, [3, 2]);
-    gameboard.placeShip(battleship, [5, 5]);
-    gameboard.placeShip(submarine, [0, 2]);
+    gameboard.placeShip(player.carrier, [3, 2]);
+    gameboard.placeShip(player.battleship, [5, 5]);
+    gameboard.placeShip(player.submarine, [0, 2]);
 
     sinkAllShips(gameboard.ships, gameboard);
 
@@ -178,16 +165,16 @@ describe("gameboard check if ships are all sunk", () => {
   });
 
   it("should report all ships sunk as false", () => {
-    gameboard.placeShip(battleship, [5, 5]);
-    gameboard.placeShip(submarine, [0, 2]);
+    gameboard.placeShip(player.battleship, [5, 5]);
+    gameboard.placeShip(player.submarine, [0, 2]);
 
-    sinkShip(battleship, [5, 5], gameboard);
+    sinkShip(player.battleship, [5, 5], gameboard);
     gameboard.receiveAttack([0, 2]);
     expect(gameboard.areAllShipsSunk()).toBe(false);
   });
 
   it("should report all ships sunk as false", () => {
-    gameboard.placeShip(battleship, [5, 5]);
+    gameboard.placeShip(player.battleship, [5, 5]);
 
     gameboard.receiveAttack([0, 2]);
     gameboard.receiveAttack([0, 5]);

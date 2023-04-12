@@ -1,7 +1,21 @@
+import Gameboard from "./gameboard";
+import Ship from "./ship";
+
 export default class Player {
-  constructor(gameboard, ...ships) {
-    this.gameboard = gameboard;
-    this.ships = ships;
+  constructor() {
+    this.gameboard = new Gameboard();
+    this.carrier = new Ship(5);
+    this.battleship = new Ship(4);
+    this.cruiser = new Ship(3);
+    this.submarine = new Ship(3);
+    this.destroyer = new Ship(2);
+    this.shipsToPlace = [
+      this.carrier,
+      this.battleship,
+      this.cruiser,
+      this.submarine,
+      this.destroyer,
+    ];
   }
 
   static getRandomInt = (max) => Math.floor(Math.random() * max);
@@ -24,7 +38,8 @@ export default class Player {
     validCoords[Player.getRandomInt(validCoords.length)];
 
   placeAllShipsRandomly() {
-    const randomShips = Player.shuffleArray(this.ships);
+    const randomShips = Player.shuffleArray(this.shipsToPlace);
+
     randomShips.forEach((ship) => {
       this.gameboard.orientation = Player.getRandomOrientation();
 

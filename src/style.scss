@@ -111,9 +111,17 @@ main {
     transition: 0.5s;
     cursor: crosshair;
 
-    &:hover {
-      background-color: green;
-    }
+    
+   
+
+  }
+
+  .cell.valid {
+    background-color: blue;
+  }
+
+  .cell.invalid {
+    background-color: red;
   }
 
 

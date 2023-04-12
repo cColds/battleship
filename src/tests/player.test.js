@@ -1,31 +1,10 @@
-import Gameboard from "../game-logic/gameboard";
 import Player from "../game-logic/player";
-import Ship from "../game-logic/ship";
 
-let carrier, battleship, submarine, cruiser, destroyer, player, ai;
+let player, ai;
 
 beforeEach(() => {
-  carrier = new Ship(5);
-  battleship = new Ship(4);
-  cruiser = new Ship(3);
-  submarine = new Ship(3);
-  destroyer = new Ship(2);
-  player = new Player(
-    new Gameboard(),
-    carrier,
-    battleship,
-    submarine,
-    cruiser,
-    destroyer
-  );
-  ai = new Player(
-    new Gameboard(),
-    carrier,
-    battleship,
-    submarine,
-    cruiser,
-    destroyer
-  );
+  player = new Player();
+  ai = new Player();
 });
 
 describe("player/ai", () => {
