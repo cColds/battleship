@@ -7,6 +7,7 @@
 
 button {
   cursor: pointer;
+
 }
 
 html, body {
@@ -50,7 +51,7 @@ main {
     flex-direction: column;
     gap: 15px;
     
-  .start-game {
+  .homepage-start-game {
   padding: 15px;
   border-radius: 15px;
   background-color: rgb(41, 41, 41);
@@ -72,12 +73,19 @@ main {
   // GAMEBOARD
 
   .gameboard-container {
+    visibility: hidden;
+    opacity: 0;
+    display: none;
+  }
+
+  .gameboard-container.active {
     display: flex;
     justify-content: center;
     gap: 50px;
     padding: 15px;
     flex-wrap: wrap;
-
+    opacity: 1;
+    visibility: visible;
 
   .board-container {
     display: flex;
@@ -100,9 +108,33 @@ main {
 
   .cell {
     border: 1px solid black;
+    transition: 0.5s;
+    cursor: crosshair;
+
+    &:hover {
+      background-color: green;
+    }
   }
+
+
   }
     }
+
+
+ // PLACE SHIPS
+
+ .place-ships-container {
+
+   .gameboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+
+  }
+  
+
+ }
   
  // MODAL
 

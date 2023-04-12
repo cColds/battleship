@@ -1,5 +1,6 @@
 const playerBoard = document.querySelector(".player-board");
 const aiBoard = document.querySelector(".ai-board");
+const playerPlaceShipsBoard = document.querySelector(".place-ships-board");
 
 function generateGameboardCells(board) {
   for (let i = 0; i < 100; i += 1) {
@@ -8,5 +9,7 @@ function generateGameboardCells(board) {
     board.appendChild(cell);
   }
 }
+
 generateGameboardCells(playerBoard);
 generateGameboardCells(aiBoard);
+generateGameboardCells(playerPlaceShipsBoard);
