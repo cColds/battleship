@@ -4,11 +4,11 @@ import Ship from "./ship";
 export default class Player {
   constructor() {
     this.gameboard = new Gameboard();
-    this.carrier = new Ship(5);
-    this.battleship = new Ship(4);
-    this.cruiser = new Ship(3);
-    this.submarine = new Ship(3);
-    this.destroyer = new Ship(2);
+    this.carrier = new Ship("cruiser", 5);
+    this.battleship = new Ship("battleship", 4);
+    this.cruiser = new Ship("cruiser", 3);
+    this.submarine = new Ship("submarine", 3);
+    this.destroyer = new Ship("destroyer", 2);
     this.shipsToPlace = [
       this.carrier,
       this.battleship,

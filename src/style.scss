@@ -71,6 +71,9 @@ main {
   }
 
   // GAMEBOARD
+  .disable {
+    pointer-events: none;
+  }  
 
   .gameboard-container {
     visibility: hidden;

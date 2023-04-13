@@ -3,10 +3,10 @@ import Ship from "../game-logic/ship";
 let carrier, battleship, cruiser, submarine;
 
 beforeEach(() => {
-  carrier = new Ship(5);
-  battleship = new Ship(4);
-  cruiser = new Ship(3);
-  submarine = new Ship(3);
+  carrier = new Ship("cruiser", 5);
+  battleship = new Ship("battleship", 4);
+  cruiser = new Ship("cruiser", 3);
+  submarine = new Ship("submarine", 3);
 });
 
 describe("ship times hit", () => {

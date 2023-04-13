@@ -41,11 +41,34 @@ const Dom = (() => {
       );
     }
 
+    function initPlaceShip() {
+      placeShipsBoard.addEventListener("click", (e) => {
+        if (e.target.classList.contains("board")) return;
+
+        const coords = JSON.parse(e.target.dataset.coords);
+        const [currentShip] = player.shipsToPlace;
+
+        player.gameboard.placeShip(currentShip, coords);
+        player.shipsToPlace.shift();
+        if (!player.shipsToPlace.length) {
+          document.querySelector(".place-ships-hint").textContent = "";
+          placeShipsBoard.classList.add("disable");
+          return;
+        }
+
+        document.querySelector(
+          ".place-ships-hint"
+        ).textContent = `Place your ${player.shipsToPlace[0].name}`;
+      });
+    }
+
     function initHighlightShip() {
       [...placeShipsBoard.children].forEach((cell) =>
         cell.addEventListener("mouseenter", (e) => {
           clearHighlightShip();
           const [currentShip] = player.shipsToPlace;
+
+          if (!currentShip) return;
 
           const [row, col] = JSON.parse(e.target.dataset.coords);
           const isValidShipPlacement = player.gameboard.canPlaceShip(
@@ -57,8 +80,8 @@ const Dom = (() => {
           for (let i = 0; i < currentShip.length; i += 1) {
             let [x, y] = [row, col];
 
-            if (player.gameboard.isHorizontal()) y = col + i;
-            else x = row + i;
+            if (player.gameboard.isHorizontal()) y += i;
+            else x += i;
 
             const cellEl = document.querySelector(
               `.place-ships-board [data-coords="[${x}, ${y}]"]`
@@ -75,8 +98,10 @@ const Dom = (() => {
         clearHighlightShip();
       });
     }
+
     initHighlightShip();
     initRemoveHighlightShip();
+    initPlaceShip();
   }
 
   function initGameboardCells(board) {
@@ -96,8 +121,6 @@ const Dom = (() => {
       }
     }
   }
-
-  // func placeSHip
 
   function initialize() {
     initGameboardCells(playerBoard);
