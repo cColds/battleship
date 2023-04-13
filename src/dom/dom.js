@@ -45,11 +45,14 @@ const Dom = (() => {
       if (e.target.classList.contains("board")) return;
 
       const coords = JSON.parse(e.target.dataset.coords);
-      const currentShip = player.shipsToPlace.shift();
-      const [nextShip] = player.shipsToPlace;
+      const [currentShip] = player.shipsToPlace;
       const placeShipsHint = document.querySelector(".place-ships-hint");
 
+      if (!player.gameboard.canPlaceShip(currentShip, coords)) return;
+
       player.gameboard.placeShip(currentShip, coords);
+      player.shipsToPlace.shift();
+      const [nextShip] = player.shipsToPlace;
 
       if (!player.shipsToPlace.length) {
         placeShipsHint.textContent = "";
