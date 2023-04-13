@@ -75,6 +75,7 @@ const Dom = (() => {
       if (!player.shipsToPlace.length) {
         placeShipsHint.textContent = "";
         placeShipsBoard.classList.add("disable");
+        rotateShip.style.display = "none";
       } else {
         placeShipsHint.textContent = `Place your ${nextShip.name}`;
       }
@@ -153,3 +154,13 @@ const Dom = (() => {
 })();
 
 export default Dom;
+
+// TODO
+/*
+- Hide rotate ship when all ships placed
+- Better variable names, class names, clean code
+- Add randomize ships, reset board, and start game functionality
+
+
+
+*/
