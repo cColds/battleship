@@ -25,7 +25,7 @@ const Dom = (() => {
   function initPlaceShipsPage() {
     // const shipToPlace = document.querySelector(".place-ship-hint");
     const rotateShip = document.querySelector(".rotate-ship");
-    // const randomizeShips = document.querySelector(".randomize-ships");
+    const randomizeShipsButton = document.querySelector(".randomize-ships");
     // const resetBoard = document.querySelector(".reset-board");
     // const startGame = document.querySelector(".place-ships-start-game");
 
@@ -81,6 +81,31 @@ const Dom = (() => {
       }
     }
 
+    function randomizeShips() {
+      player.placeAllShipsRandomly();
+      // get gameboard ships array
+      // for each ship
+      // loop through all of them and style
+      console.log(player.gameboard.board);
+      const { ships } = player.gameboard;
+      ships.forEach((ship) => {
+        const [row, col] = ship.coords;
+        for (let i = 0; i < ship.length; i += 1) {
+          console.log(ship.name, [row, col]);
+          // let [x, y] = [row, col];
+
+          // if (player.gameboard.isHorizontal()) x += i;
+          // else y += i;
+
+          // const cellEl = document.querySelector(
+          //   `.place-ships-board [data-coords="[${x}, ${y}]"]`
+          // );
+
+          // cellEl.classList.add("ship");
+        }
+      });
+    }
+
     function highlightShip(e) {
       clearHighlightShip();
       const [currentShip] = player.shipsToPlace;
@@ -117,6 +142,7 @@ const Dom = (() => {
     placeShipsBoard.addEventListener("mouseleave", clearHighlightShip);
     placeShipsBoard.addEventListener("click", placeShip);
     rotateShip.addEventListener("click", invertShipOrientation);
+    randomizeShipsButton.addEventListener("click", randomizeShips);
   }
 
   function initGameboardCells(board) {
@@ -157,9 +183,8 @@ export default Dom;
 
 // TODO
 /*
-- Hide rotate ship when all ships placed
-- Better variable names, class names, clean code
 - Add randomize ships, reset board, and start game functionality
+- Better variable names, class names, clean code
 
 
 
