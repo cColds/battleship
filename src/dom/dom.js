@@ -24,7 +24,7 @@ const Dom = (() => {
 
   function initPlaceShipsPage() {
     // const shipToPlace = document.querySelector(".place-ship-hint");
-    // const rotateShip = document.querySelector(".rotate-ship");
+    const rotateShip = document.querySelector(".rotate-ship");
     // const randomizeShips = document.querySelector(".randomize-ships");
     // const resetBoard = document.querySelector(".reset-board");
     // const startGame = document.querySelector(".place-ships-start-game");
@@ -106,9 +106,16 @@ const Dom = (() => {
       }
     }
 
+    function invertShipOrientation() {
+      player.gameboard.orientation = player.gameboard.isHorizontal()
+        ? "vertical"
+        : "horizontal";
+    }
+
     placeShipsBoard.addEventListener("mouseover", highlightShip);
     placeShipsBoard.addEventListener("mouseleave", clearHighlightShip);
     placeShipsBoard.addEventListener("click", placeShip);
+    rotateShip.addEventListener("click", invertShipOrientation);
   }
 
   function initGameboardCells(board) {
