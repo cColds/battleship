@@ -71,6 +71,7 @@ main {
   }
 
   // GAMEBOARD
+
   .disable {
     pointer-events: none;
   }  
@@ -120,13 +121,16 @@ main {
   }
 
   .cell.valid {
-    background-color: blue;
+    background-color: green;
   }
 
   .cell.invalid {
     background-color: red;
   }
 
+  .cell.ship {
+    background-color: black;
+  }
 
   }
     }

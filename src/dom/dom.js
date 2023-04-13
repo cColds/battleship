@@ -41,18 +41,36 @@ const Dom = (() => {
       );
     }
 
+    function highlightShipPlaced(e, ship) {
+      const [row, col] = JSON.parse(e.target.dataset.coords);
+      for (let i = 0; i < ship.length; i += 1) {
+        let [x, y] = [row, col];
+
+        if (player.gameboard.isHorizontal()) y += i;
+        else x += i;
+
+        const cellEl = document.querySelector(
+          `.place-ships-board [data-coords="[${x}, ${y}]"]`
+        );
+
+        cellEl.classList.add("ship");
+      }
+    }
+
     function placeShip(e) {
       if (e.target.classList.contains("board")) return;
 
       const coords = JSON.parse(e.target.dataset.coords);
       const [currentShip] = player.shipsToPlace;
-      const placeShipsHint = document.querySelector(".place-ships-hint");
 
       if (!player.gameboard.canPlaceShip(currentShip, coords)) return;
 
       player.gameboard.placeShip(currentShip, coords);
       player.shipsToPlace.shift();
+
       const [nextShip] = player.shipsToPlace;
+      const placeShipsHint = document.querySelector(".place-ships-hint");
+      highlightShipPlaced(e, currentShip);
 
       if (!player.shipsToPlace.length) {
         placeShipsHint.textContent = "";
