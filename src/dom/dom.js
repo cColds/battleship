@@ -7,6 +7,7 @@ const Dom = (() => {
   const playerBoard = document.querySelector(".player-board");
   const aiBoard = document.querySelector(".ai-board");
   const placeShipsBoard = document.querySelector(".place-ships-board");
+  const battleshipBoard = document.querySelector(".battleship-gameboard");
 
   function initStartGameHomepage() {
     const startGameContainer = document.querySelector(".start-game-container");
@@ -23,13 +24,23 @@ const Dom = (() => {
   }
 
   function initPlaceShipsPage() {
-    // const shipToPlace = document.querySelector(".place-ship-hint");
     const rotateShip = document.querySelector(".rotate-ship");
     const placeShipsHint = document.querySelector(".place-ships-hint");
 
     const randomizeShipsButton = document.querySelector(".randomize-ships");
     const resetBoard = document.querySelector(".reset-board");
-    // const startGame = document.querySelector(".place-ships-start-game");
+    const startGame = document.querySelector(".place-ships-start-game");
+
+    function startGameHandler() {
+      if (player.gameboard.ships.length !== 5) return;
+
+      const placeShipsContainer = document.querySelector(
+        ".place-ships-container"
+      );
+
+      placeShipsContainer.classList.remove("active");
+      battleshipBoard.classList.add("active");
+    }
 
     function clearHighlightShip() {
       const isValidShipHighlighted = document.querySelector(".valid");
@@ -172,6 +183,7 @@ const Dom = (() => {
     rotateShip.addEventListener("click", invertBoardOrientation);
     randomizeShipsButton.addEventListener("click", randomizeShips);
     resetBoard.addEventListener("click", resetBoardHandler);
+    startGame.addEventListener("click", startGameHandler);
   }
 
   function initGameboardCells(board) {
