@@ -87,9 +87,20 @@ const Dom = (() => {
       const coords = JSON.parse(e.target.dataset.coords);
       const [currentShip] = player.shipsToPlace;
 
-      if (!player.gameboard.canPlaceShip(currentShip, coords)) return;
+      if (
+        !player.gameboard.canPlaceShip(
+          currentShip,
+          coords,
+          isHorizontal ? "horizontal" : "vertical"
+        )
+      )
+        return;
 
-      player.gameboard.placeShip(currentShip, coords);
+      player.gameboard.placeShip(
+        currentShip,
+        coords,
+        isHorizontal ? "horizontal" : "vertical"
+      );
       player.shipsToPlace.shift();
 
       const [nextShip] = player.shipsToPlace;
