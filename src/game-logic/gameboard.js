@@ -10,10 +10,8 @@ export default class Gameboard {
   static isOutOfBounds = ([row, col]) =>
     row < 0 || row > 9 || col < 0 || col > 9;
 
-  static isHorizontal = (orientation) => orientation === "horizontal";
-
   static getEndPosition = (ship, [row, col], orientation) =>
-    Gameboard.isHorizontal(orientation) ? col : row + ship.length - 1;
+    orientation === "horizontal" ? col : row + ship.length - 1;
 
   areAllShipsSunk = () => this.ships.every((ship) => ship.isSunk());
 
@@ -52,7 +50,7 @@ export default class Gameboard {
 
     let i = 0;
     while (i < ship.length) {
-      if (Gameboard.isHorizontal(orientation)) {
+      if (orientation === "horizontal") {
         this.board[row][col + i] = ship;
       } else {
         this.board[row + i][col] = ship;
