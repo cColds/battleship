@@ -1,11 +1,11 @@
 /* eslint-disable no-param-reassign */
 function sinkShip(ship, [row, col], gameboard) {
+  console.log({ gameboard, ship });
   for (let i = 0; i < ship.length; i += 1) {
-    if (gameboard.orientation === "horizontal") {
-      gameboard.receiveAttack(gameboard.board[row][col + i]);
+    if (ship.orientation === "horizontal") {
+      gameboard.receiveAttack([row + i, col]);
     } else {
-      gameboard.board[row + i][col].hit();
-      gameboard.board[row + i][col] = "hit";
+      gameboard.receiveAttack([row + i, col]);
     }
   }
 }

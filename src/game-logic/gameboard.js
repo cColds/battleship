@@ -4,31 +4,29 @@ import Ship from "./ship";
 export default class Gameboard {
   constructor() {
     this.board = Array.from({ length: 10 }, () => Array(10).fill(null));
-    this.orientation = "horizontal";
     this.ships = [];
   }
 
   static isOutOfBounds = ([row, col]) =>
     row < 0 || row > 9 || col < 0 || col > 9;
 
-  isHorizontal = () => this.orientation === "horizontal";
+  static isHorizontal = (orientation) => orientation === "horizontal";
+
+  static getEndPosition = (ship, [row, col], orientation) =>
+    Gameboard.isHorizontal(orientation) ? col : row + ship.length - 1;
 
   areAllShipsSunk = () => this.ships.every((ship) => ship.isSunk());
-
-  getEndPosition = (ship, [row, col]) =>
-    this.isHorizontal() ? col : row + ship.length - 1;
 
   isHit = ([row, col]) => this.board[row][col] instanceof Ship;
 
   resetGameboard() {
     this.board = Array.from({ length: 10 }, () => Array(10).fill(null));
     this.ships = [];
-    this.orientation = "horizontal";
   }
 
-  isEveryCellValid(ship, [row, col]) {
+  isEveryCellValid(ship, [row, col], orientation) {
     for (let i = 0; i < ship.length; i += 1) {
-      if (this.isHorizontal()) {
+      if (orientation === "horizontal") {
         if (this.board[row][col + i] === null) continue;
       } else if (this.board[row + i][col] === null) continue;
 
@@ -37,29 +35,30 @@ export default class Gameboard {
     return true;
   }
 
-  canPlaceShip(ship, [row, col]) {
+  canPlaceShip(ship, [row, col], orientation) {
     return (
       !Gameboard.isOutOfBounds([row, col]) &&
-      this.getEndPosition(ship, [row, col]) < 10 &&
-      this.isEveryCellValid(ship, [row, col])
+      Gameboard.getEndPosition(ship, [row, col], orientation) < 10 &&
+      this.isEveryCellValid(ship, [row, col], orientation)
     );
   }
 
-  placeShip(ship, [row, col]) {
+  placeShip(ship, [row, col], orientation) {
     if (!this.canPlaceShip(ship, [row, col])) return;
 
-    let i = 0;
     ship.coords = [row, col];
+    ship.orientation = orientation;
+    this.ships.push(ship);
+
+    let i = 0;
     while (i < ship.length) {
-      if (this.isHorizontal()) {
+      if (Gameboard.isHorizontal(orientation)) {
         this.board[row][col + i] = ship;
       } else {
         this.board[row + i][col] = ship;
       }
       i += 1;
     }
-
-    this.ships.push(ship);
   }
 
   receiveAttack([row, col]) {
