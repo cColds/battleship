@@ -11,7 +11,9 @@ export default class Gameboard {
     row < 0 || row > 9 || col < 0 || col > 9;
 
   static getEndPosition = (ship, [row, col], orientation) =>
-    orientation === "horizontal" ? col : row + ship.length - 1;
+    orientation === "horizontal"
+      ? col + ship.length - 1
+      : row + ship.length - 1;
 
   areAllShipsSunk = () => this.ships.every((ship) => ship.isSunk());
 
@@ -42,7 +44,7 @@ export default class Gameboard {
   }
 
   placeShip(ship, [row, col], orientation) {
-    if (!this.canPlaceShip(ship, [row, col])) return;
+    if (!this.canPlaceShip(ship, [row, col], orientation)) return;
 
     ship.coords = [row, col];
     ship.orientation = orientation;

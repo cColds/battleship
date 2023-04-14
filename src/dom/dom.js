@@ -25,6 +25,8 @@ const Dom = (() => {
   function initPlaceShipsPage() {
     // const shipToPlace = document.querySelector(".place-ship-hint");
     const rotateShip = document.querySelector(".rotate-ship");
+    const placeShipsHint = document.querySelector(".place-ships-hint");
+
     const randomizeShipsButton = document.querySelector(".randomize-ships");
     // const resetBoard = document.querySelector(".reset-board");
     // const startGame = document.querySelector(".place-ships-start-game");
@@ -41,28 +43,36 @@ const Dom = (() => {
       );
     }
 
+    function clearPlacedShipHighlight() {
+      const highlightedCells = document.querySelectorAll(".ship");
+      highlightedCells.forEach((highlightedCell) =>
+        highlightedCell.classList.remove("ship")
+      );
+    }
+
     let isHorizontal = true;
 
     function randomizeShips() {
-      // player.placeAllShipsRandomly();
-      // // get gameboard ships array
-      // // for each ship
-      // // loop through all of them and style
-      // console.log(player.gameboard.board);
-      // const { ships } = player.gameboard;
-      // ships.forEach((ship) => {
-      //   const [row, col] = ship.coords;
-      //   for (let i = 0; i < ship.length; i += 1) {
-      //     console.log(ship.name, [row, col]);
-      //     let [x, y] = [row, col];
-      //     if (player.gameboard.isHorizontal()) x += i;
-      //     else y += i;
-      //     const cellEl = document.querySelector(
-      //       `.place-ships-board [data-coords="[${x}, ${y}]"]`
-      //     );
-      //     cellEl.classList.add("ship");
-      //   }
-      // });
+      player.placeAllShipsRandomly();
+      clearPlacedShipHighlight();
+      rotateShip.style.display = "block";
+
+      const { ships } = player.gameboard;
+      ships.forEach((ship) => {
+        const [row, col] = ship.coords;
+        for (let i = 0; i < ship.length; i += 1) {
+          let [x, y] = [row, col];
+          if (ship.orientation === "horizontal") y += i;
+          else x += i;
+          const cellEl = document.querySelector(
+            `.place-ships-board [data-coords="[${x}, ${y}]"]`
+          );
+          cellEl.classList.add("ship");
+        }
+      });
+      placeShipsBoard.classList.add("disable");
+      placeShipsHint.textContent = "";
+      rotateShip.style.display = "none";
     }
 
     function highlightShipPlaced(e, ship) {
@@ -104,7 +114,6 @@ const Dom = (() => {
       player.shipsToPlace.shift();
 
       const [nextShip] = player.shipsToPlace;
-      const placeShipsHint = document.querySelector(".place-ships-hint");
       highlightShipPlaced(e, currentShip);
 
       if (!player.shipsToPlace.length) {
@@ -192,10 +201,7 @@ export default Dom;
 
 // TODO
 /*
-- Refactor orientation to be on ship instead of board
 - Add randomize ships, reset board, and start game functionality
 - Better variable names, class names, clean code
-
-
 
 */

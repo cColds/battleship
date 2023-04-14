@@ -38,22 +38,24 @@ export default class Player {
     validCoords[Player.getRandomInt(validCoords.length)];
 
   placeAllShipsRandomly() {
+    this.gameboard.resetGameboard();
+
     const randomShips = Player.shuffleArray(this.shipsToPlace);
-
     randomShips.forEach((ship) => {
-      this.gameboard.orientation = Player.getRandomOrientation();
-
       const validCoords = [];
+      const randomOrientation = Player.getRandomOrientation();
       for (let row = 0; row < 10; row += 1) {
         for (let col = 0; col < 10; col += 1) {
-          if (this.gameboard.canPlaceShip(ship, [row, col])) {
+          if (
+            this.gameboard.canPlaceShip(ship, [row, col], randomOrientation)
+          ) {
             validCoords.push([row, col]);
           }
         }
       }
 
       const [randomX, randomY] = Player.getRandomValidCoords(validCoords);
-      this.gameboard.placeShip(ship, [randomX, randomY]);
+      this.gameboard.placeShip(ship, [randomX, randomY], randomOrientation);
     });
   }
 
