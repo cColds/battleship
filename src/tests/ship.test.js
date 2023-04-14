@@ -3,7 +3,7 @@ import Ship from "../game-logic/ship";
 let carrier, battleship, cruiser, submarine;
 
 beforeEach(() => {
-  carrier = new Ship("cruiser", 5);
+  carrier = new Ship("carrier", 5);
   battleship = new Ship("battleship", 4);
   cruiser = new Ship("cruiser", 3);
   submarine = new Ship("submarine", 3);
@@ -47,5 +47,13 @@ describe("ship sunk", () => {
     battleship.hit();
     battleship.hit();
     expect(battleship.isSunk()).toBe(true);
+  });
+});
+
+describe("ship name", () => {
+  it("should set ship name to destroyer", () => {
+    const test = new Ship("destroyer", 2);
+
+    expect(test.name).toBe("destroyer");
   });
 });
