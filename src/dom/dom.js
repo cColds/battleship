@@ -53,6 +53,7 @@ const Dom = (() => {
     let isHorizontal = true;
 
     function randomizeShips() {
+      player.restoreShipsToPlace();
       player.placeAllShipsRandomly();
       clearPlacedShipHighlight();
       rotateShip.style.display = "block";
