@@ -28,7 +28,7 @@ const Dom = (() => {
     const placeShipsHint = document.querySelector(".place-ships-hint");
 
     const randomizeShipsButton = document.querySelector(".randomize-ships");
-    // const resetBoard = document.querySelector(".reset-board");
+    const resetBoard = document.querySelector(".reset-board");
     // const startGame = document.querySelector(".place-ships-start-game");
 
     function clearHighlightShip() {
@@ -48,6 +48,15 @@ const Dom = (() => {
       highlightedCells.forEach((highlightedCell) =>
         highlightedCell.classList.remove("ship")
       );
+    }
+
+    function resetBoardHandler() {
+      player.restoreShipsToPlace();
+      player.gameboard.resetGameboard();
+      clearPlacedShipHighlight();
+      placeShipsBoard.classList.remove("disable");
+      rotateShip.style.display = "block";
+      placeShipsHint.textContent = "Place your carrier";
     }
 
     let isHorizontal = true;
@@ -162,6 +171,7 @@ const Dom = (() => {
     placeShipsBoard.addEventListener("click", placeShip);
     rotateShip.addEventListener("click", invertBoardOrientation);
     randomizeShipsButton.addEventListener("click", randomizeShips);
+    resetBoard.addEventListener("click", resetBoardHandler);
   }
 
   function initGameboardCells(board) {

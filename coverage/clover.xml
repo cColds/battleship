@@ -1,50 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1681477924917" clover="3.2.0">
-  <project timestamp="1681477924917" name="All files">
-    <metrics statements="41" coveredstatements="40" conditionals="6" coveredconditionals="6" methods="11" coveredmethods="10" elements="58" coveredelements="56" complexity="0" loc="41" ncloc="41" packages="1" files="1" classes="1"/>
-    <file name="player.js" path="/home/thaddaeus/Desktop/Projects/battleship/src/game-logic/player.js">
-      <metrics statements="41" coveredstatements="40" conditionals="6" coveredconditionals="6" methods="11" coveredmethods="10"/>
-      <line num="6" count="37" type="stmt"/>
-      <line num="7" count="37" type="stmt"/>
-      <line num="8" count="37" type="stmt"/>
-      <line num="9" count="37" type="stmt"/>
-      <line num="10" count="37" type="stmt"/>
-      <line num="11" count="37" type="stmt"/>
-      <line num="12" count="37" type="stmt"/>
-      <line num="21" count="82" type="stmt"/>
-      <line num="25" count="8" type="stmt"/>
-      <line num="26" count="8" type="stmt"/>
-      <line num="27" count="32" type="stmt"/>
-      <line num="28" count="32" type="stmt"/>
-      <line num="31" count="8" type="stmt"/>
-      <line num="34" count="2" type="stmt"/>
-      <line num="35" count="40" type="cond" truecount="2" falsecount="0"/>
-      <line num="37" count="2" type="stmt"/>
-      <line num="38" count="42" type="stmt"/>
-      <line num="41" count="0" type="stmt"/>
-      <line num="51" count="8" type="stmt"/>
-      <line num="53" count="8" type="stmt"/>
-      <line num="54" count="8" type="stmt"/>
-      <line num="55" count="40" type="stmt"/>
-      <line num="56" count="40" type="stmt"/>
-      <line num="57" count="40" type="stmt"/>
-      <line num="58" count="400" type="stmt"/>
-      <line num="59" count="4000" type="cond" truecount="2" falsecount="0"/>
-      <line num="62" count="2627" type="stmt"/>
-      <line num="67" count="40" type="stmt"/>
-      <line num="68" count="40" type="stmt"/>
-      <line num="73" count="2" type="stmt"/>
-      <line num="74" count="2" type="stmt"/>
-      <line num="75" count="2" type="stmt"/>
-      <line num="76" count="20" type="stmt"/>
-      <line num="77" count="200" type="cond" truecount="2" falsecount="0"/>
-      <line num="78" count="166" type="stmt"/>
-      <line num="83" count="2" type="stmt"/>
-      <line num="87" count="1" type="stmt"/>
-      <line num="88" count="1" type="stmt"/>
-      <line num="92" count="2" type="stmt"/>
-      <line num="96" count="2" type="stmt"/>
-      <line num="98" count="2" type="stmt"/>
-    </file>
+<coverage generated="1681478248576" clover="3.2.0">
+  <project timestamp="1681478248576" name="All files">
+    <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0" elements="0" coveredelements="0" complexity="0" loc="0" ncloc="0" packages="0" files="0" classes="0"/>
   </project>
 </coverage>
