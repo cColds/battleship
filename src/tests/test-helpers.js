@@ -2,7 +2,7 @@
 function sinkShip(ship, [row, col], gameboard) {
   for (let i = 0; i < ship.length; i += 1) {
     if (ship.orientation === "horizontal") {
-      gameboard.receiveAttack([row + i, col]);
+      gameboard.receiveAttack([row, col + i]);
     } else {
       gameboard.receiveAttack([row + i, col]);
     }
