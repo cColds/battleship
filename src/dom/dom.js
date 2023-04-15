@@ -3,11 +3,15 @@ import Player from "../game-logic/player";
 
 const Dom = (() => {
   const player = new Player();
-  // const ai = new Player();
+  const ai = new Player();
   const playerBoard = document.querySelector(".player-board");
   const aiBoard = document.querySelector(".ai-board");
   const placeShipsBoard = document.querySelector(".place-ships-board");
   const battleshipBoard = document.querySelector(".battleship-gameboard");
+  const playerNameInput = document.querySelector("#player-name-input");
+  const playerBoardName = document.querySelector(
+    ".player-board-container .board-name"
+  );
 
   function initStartGameHomepage() {
     const startGameContainer = document.querySelector(".start-game-container");
@@ -32,6 +36,22 @@ const Dom = (() => {
     const startGame = document.querySelector(".place-ships-start-game");
     let currentShipOrientation = "horizontal";
 
+    function highlightShip(coords, ship, orientation, selector, className) {
+      const [row, col] = coords;
+      for (let i = 0; i < ship.length; i += 1) {
+        let [x, y] = [row, col];
+
+        if (orientation === "horizontal") y += i;
+        else x += i;
+
+        const shipCell = document.querySelector(
+          `${selector} [data-coords="[${x}, ${y}]"]`
+        );
+
+        if (shipCell) shipCell.classList.add(className);
+      }
+    }
+
     function startGameHandler() {
       if (player.gameboard.ships.length !== 5) return;
 
@@ -41,6 +61,21 @@ const Dom = (() => {
 
       placeShipsContainer.classList.remove("active");
       battleshipBoard.classList.add("active");
+      ai.placeAllShipsRandomly();
+
+      player.gameboard.ships.forEach((ship) => {
+        highlightShip(
+          ship.coords,
+          ship,
+          ship.orientation,
+          ".player-board",
+          "ship"
+        );
+      });
+
+      playerBoardName.textContent = playerNameInput.value.trim()
+        ? playerNameInput.value.trim()
+        : "Player";
     }
 
     function clearHighlightShipPreview() {
@@ -71,22 +106,6 @@ const Dom = (() => {
       placeShipsHint.textContent = "Place your carrier";
     }
 
-    function highlightShip(coords, ship, orientation, className) {
-      const [row, col] = coords;
-      for (let i = 0; i < ship.length; i += 1) {
-        let [x, y] = [row, col];
-
-        if (orientation === "horizontal") y += i;
-        else x += i;
-
-        const shipCell = document.querySelector(
-          `.place-ships-board [data-coords="[${x}, ${y}]"]`
-        );
-
-        if (shipCell) shipCell.classList.add(className);
-      }
-    }
-
     function highlightShipPreview(e) {
       clearHighlightShipPreview();
       const [currentShip] = player.shipsToPlace;
@@ -103,6 +122,7 @@ const Dom = (() => {
         coords,
         currentShip,
         currentShipOrientation,
+        ".place-ships-board",
         cellValidityName
       );
     }
@@ -115,7 +135,13 @@ const Dom = (() => {
 
       const { ships } = player.gameboard;
       ships.forEach((ship) => {
-        highlightShip(ship.coords, ship, ship.orientation, "ship");
+        highlightShip(
+          ship.coords,
+          ship,
+          ship.orientation,
+          ".place-ships-board",
+          "ship"
+        );
       });
       placeShipsBoard.classList.add("disable");
       placeShipsHint.textContent = "";
@@ -139,7 +165,13 @@ const Dom = (() => {
 
       player.gameboard.placeShip(currentShip, coords, currentShipOrientation);
 
-      highlightShip(coords, currentShip, currentShip.orientation, "ship");
+      highlightShip(
+        coords,
+        currentShip,
+        currentShip.orientation,
+        ".place-ships-board",
+        "ship"
+      );
       player.shipsToPlace.shift();
 
       const [nextShip] = player.shipsToPlace;
@@ -166,6 +198,8 @@ const Dom = (() => {
     resetBoard.addEventListener("click", resetBoardHandler);
     startGame.addEventListener("click", startGameHandler);
   }
+
+  // function initBattleshipPage() {}
 
   function initGameboardCells(board) {
     for (let i = 0; i < 100; i += 1) {
@@ -202,3 +236,16 @@ const Dom = (() => {
 })();
 
 export default Dom;
+
+/* 
+TODO:
+
+// Battleship game page
+- When player clicks on the ai board's cell, call attack function
+- If cell has hit, mark red
+- If cell has missed, mark green
+- If cell has been hit/missed before, don't do anything
+- If winner after an attack call, end game
+
+
+*/

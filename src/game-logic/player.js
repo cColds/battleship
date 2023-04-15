@@ -85,6 +85,7 @@ export default class Player {
 
   attack([row, col], enemy) {
     enemy.gameboard.receiveAttack([row, col]);
+
     Player.makeComputerAttack(this);
   }
 
