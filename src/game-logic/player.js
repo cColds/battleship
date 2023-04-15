@@ -83,10 +83,8 @@ export default class Player {
     return validCoords;
   }
 
-  attack([row, col], enemy) {
+  static attack([row, col], enemy) {
     enemy.gameboard.receiveAttack([row, col]);
-
-    Player.makeComputerAttack(this);
   }
 
   static makeComputerAttack(player) {

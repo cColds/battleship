@@ -37,7 +37,7 @@ describe("player/ai", () => {
   it("should make player attack", () => {
     player.placeAllShipsRandomly();
     ai.placeAllShipsRandomly();
-    player.attack([3, 5], ai);
+    Player.attack([3, 5], ai);
     expect(ai.gameboard.board[3][5]).not.toBe(null);
   });
 

@@ -69,6 +69,8 @@ export default class Gameboard {
     )
       return false;
 
+    this.latestReceivedAttack = [row, col];
+
     if (!this.isHit([row, col])) {
       this.board[row][col] = "miss";
       return false;

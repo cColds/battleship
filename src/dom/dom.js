@@ -199,7 +199,23 @@ const Dom = (() => {
     startGame.addEventListener("click", startGameHandler);
   }
 
-  // function initBattleshipPage() {}
+  function initBattleshipPage() {
+    function attack(e) {
+      if (e.target.classList.contains("ai-board")) return;
+      const [row, col] = JSON.parse(e.target.dataset.coords);
+
+      player.attack([row, col], ai);
+
+      if (ai.gameboard.board[row][col] === "miss") {
+        const aiCell = document.querySelector(
+          `.ai-board [data-coords="[${row}, ${col}]"]`
+        );
+        aiCell.classList.add("invalid");
+      }
+    }
+
+    aiBoard.addEventListener("click", attack);
+  }
 
   function initGameboardCells(board) {
     for (let i = 0; i < 100; i += 1) {
@@ -230,6 +246,7 @@ const Dom = (() => {
 
     initStartGameHomepage();
     initPlaceShipsPage();
+    initBattleshipPage();
   }
 
   return { initialize };
