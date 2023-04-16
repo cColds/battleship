@@ -39,11 +39,11 @@ export default class Player {
 
   restoreShipsToPlace() {
     this.shipsToPlace = [
-      this.carrier,
-      this.battleship,
-      this.cruiser,
-      this.submarine,
-      this.destroyer,
+      new Ship("carrier", 5),
+      new Ship("battleship", 5),
+      new Ship("cruiser", 5),
+      new Ship("submarine", 5),
+      new Ship("destroyer", 5),
     ];
   }
 

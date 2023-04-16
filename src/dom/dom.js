@@ -6,17 +6,38 @@ const Dom = (() => {
   const ai = new Player();
   const playerBoard = document.querySelector(".player-board");
   const aiBoard = document.querySelector(".ai-board");
+  const placeShipsPage = document.querySelector(".place-ships-container");
   const placeShipsBoard = document.querySelector(".place-ships-board");
-  const battleshipBoard = document.querySelector(".battleship-gameboard");
+
+  const placeShipsContainer = document.querySelector(".place-ships-container");
   const playerNameInput = document.querySelector("#player-name-input");
   const playerBoardName = document.querySelector(
     ".player-board-container .board-name"
   );
 
+  const battleshipBoard = document.querySelector(".battleship-gameboard");
+
+  function initGameboardCells(board) {
+    for (let i = 0; i < 100; i += 1) {
+      const cell = document.createElement("button");
+      cell.classList.add("cell");
+      board.appendChild(cell);
+    }
+  }
+
+  function initGameboardCellCoords(board) {
+    let i = 0;
+    for (let row = 0; row < 10; row += 1) {
+      for (let col = 0; col < 10; col += 1) {
+        board.children[i].dataset.coords = `[${row}, ${col}]`;
+        i += 1;
+      }
+    }
+  }
+
   function initStartGameHomepage() {
     const startGameContainer = document.querySelector(".start-game-container");
     const startGameHomepage = document.querySelector(".homepage-start-game");
-    const placeShipsPage = document.querySelector(".place-ships-container");
     const placeShipsGameboard = document.querySelector(
       ".place-ships-gameboard"
     );
@@ -30,7 +51,6 @@ const Dom = (() => {
   function initPlaceShipsPage() {
     const rotateShip = document.querySelector(".rotate-ship");
     const placeShipsHint = document.querySelector(".place-ships-hint");
-
     const randomizeShipsButton = document.querySelector(".randomize-ships");
     const resetBoard = document.querySelector(".reset-board");
     const startGame = document.querySelector(".place-ships-start-game");
@@ -52,15 +72,21 @@ const Dom = (() => {
       }
     }
 
+    function clearHighlightShip() {
+      const highlightedCells = document.querySelectorAll(
+        ".place-ships-board .ship"
+      );
+      highlightedCells.forEach((highlightedCell) =>
+        highlightedCell.classList.remove("ship")
+      );
+    }
+
     function startGameHandler() {
       if (player.gameboard.ships.length !== 5) return;
 
-      const placeShipsContainer = document.querySelector(
-        ".place-ships-container"
-      );
-
       placeShipsContainer.classList.remove("active");
       battleshipBoard.classList.add("active");
+      clearHighlightShip();
       ai.placeAllShipsRandomly();
 
       player.gameboard.ships.forEach((ship) => {
@@ -76,6 +102,10 @@ const Dom = (() => {
       playerBoardName.textContent = playerNameInput.value.trim()
         ? playerNameInput.value.trim()
         : "Player";
+
+      placeShipsBoard.classList.remove("disable");
+      rotateShip.style.display = "block";
+      placeShipsHint.textContent = "Place your carrier";
     }
 
     function clearHighlightShipPreview() {
@@ -87,13 +117,6 @@ const Dom = (() => {
 
       cellsHighlighted.forEach((cell) =>
         cell.classList.remove(cellValidityName)
-      );
-    }
-
-    function clearHighlightShip() {
-      const highlightedCells = document.querySelectorAll(".ship");
-      highlightedCells.forEach((highlightedCell) =>
-        highlightedCell.classList.remove("ship")
       );
     }
 
@@ -200,6 +223,11 @@ const Dom = (() => {
   }
 
   function initBattleshipPage() {
+    const modalOverlay = document.querySelector(".modal-overlay");
+    const gameOverText = document.querySelector(".game-over-text");
+    const playAgain = document.querySelector(".play-again");
+    const newGame = document.querySelector(".new-game");
+
     function highlightAttack(board, [row, col], selector) {
       const cell = document.querySelector(
         `${selector} [data-coords="[${row}, ${col}]"]`
@@ -209,6 +237,28 @@ const Dom = (() => {
       } else {
         cell.style.backgroundColor = "green";
       }
+    }
+
+    function clearGameboardCellsHighlighted() {
+      const cells = document.querySelectorAll(".cell");
+      cells.forEach((cell) => {
+        cell.style.backgroundColor = "";
+        cell.classList.remove("ship");
+      });
+    }
+
+    function playAgainHandler() {
+      player.gameboard.resetGameboard();
+      ai.gameboard.resetGameboard();
+      player.gameboard.ships = [];
+      ai.gameboard.ships = [];
+      player.restoreShipsToPlace();
+      ai.restoreShipsToPlace();
+
+      clearGameboardCellsHighlighted();
+      modalOverlay.classList.remove("active");
+      battleshipBoard.classList.remove("active");
+      placeShipsContainer.classList.add("active");
     }
 
     function attack(e) {
@@ -225,7 +275,8 @@ const Dom = (() => {
 
       highlightAttack(ai.gameboard.board, [row, col], ".ai-board");
       if (ai.gameboard.areAllShipsSunk()) {
-        console.log(`Player won`);
+        modalOverlay.classList.add("active");
+        gameOverText.textContent = `Game Over! You won!`;
         return;
       }
 
@@ -237,29 +288,15 @@ const Dom = (() => {
       );
 
       if (player.gameboard.areAllShipsSunk()) {
-        console.log(`AI won`);
+        gameOverText.textContent = `Game Over! You lost!`;
+
+        modalOverlay.classList.add("active");
       }
     }
 
     aiBoard.addEventListener("click", attack);
-  }
-
-  function initGameboardCells(board) {
-    for (let i = 0; i < 100; i += 1) {
-      const cell = document.createElement("button");
-      cell.classList.add("cell");
-      board.appendChild(cell);
-    }
-  }
-
-  function initGameboardCellCoords(board) {
-    let i = 0;
-    for (let row = 0; row < 10; row += 1) {
-      for (let col = 0; col < 10; col += 1) {
-        board.children[i].dataset.coords = `[${row}, ${col}]`;
-        i += 1;
-      }
-    }
+    playAgain.addEventListener("click", playAgainHandler);
+    newGame.addEventListener("click", () => window.location.reload());
   }
 
   function initialize() {
@@ -280,16 +317,3 @@ const Dom = (() => {
 })();
 
 export default Dom;
-
-/* 
-TODO:
-
-// Battleship game page
-- When player clicks on the ai board's cell, call attack function
-- If cell has hit, mark red
-- If cell has missed, mark green
-- If cell has been hit/missed before, don't do anything
-- If winner after an attack call, end game
-
-
-*/
