@@ -73,11 +73,10 @@ export default class Gameboard {
 
     if (!this.isHit([row, col])) {
       this.board[row][col] = "miss";
-      return false;
+    } else {
+      this.board[row][col].hit();
+      this.board[row][col] = "hit";
     }
-
-    this.board[row][col].hit();
-    this.board[row][col] = "hit";
 
     return true;
   }

@@ -127,12 +127,12 @@ describe("gameboard attack cell", () => {
 
   it("should miss attack", () => {
     gameboard.placeShip(player.carrier, [7, 2], "horizontal");
-    expect(gameboard.receiveAttack([5, 6])).toBe(false);
+    expect(gameboard.receiveAttack([5, 6])).toBe(true);
   });
 
   it("should miss attack", () => {
     gameboard.placeShip(player.carrier, [4, 3], "vertical");
-    expect(gameboard.receiveAttack([3, 3])).toBe(false);
+    expect(gameboard.receiveAttack([3, 3])).toBe(true);
   });
 
   it("should miss attack on invalid coordinates", () => {

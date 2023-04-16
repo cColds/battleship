@@ -45,7 +45,8 @@ describe("player/ai", () => {
     player.placeAllShipsRandomly();
     ai.placeAllShipsRandomly();
 
-    const [computerRow, computerCol] = Player.makeComputerAttack(player);
+    Player.makeComputerAttack(player);
+    const [computerRow, computerCol] = player.gameboard.latestReceivedAttack;
     const playerBoard = player.gameboard.board;
     expect(playerBoard[computerRow][computerCol]).not.toBe(null);
   });

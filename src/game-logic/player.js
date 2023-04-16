@@ -74,7 +74,10 @@ export default class Player {
     const validCoords = [];
     for (let row = 0; row < 10; row += 1) {
       for (let col = 0; col < 10; col += 1) {
-        if (enemyBoard[row][col] === null) {
+        if (
+          enemyBoard[row][col] === null ||
+          enemyBoard[row][col] instanceof Ship
+        ) {
           validCoords.push([row, col]);
         }
       }
@@ -84,7 +87,7 @@ export default class Player {
   }
 
   static attack([row, col], enemy) {
-    enemy.gameboard.receiveAttack([row, col]);
+    return enemy.gameboard.receiveAttack([row, col]);
   }
 
   static makeComputerAttack(player) {
@@ -92,8 +95,6 @@ export default class Player {
       Player.getValidCoords(player)
     );
 
-    player.gameboard.receiveAttack(randomValidCoord);
-
-    return randomValidCoord;
+    return player.gameboard.receiveAttack(randomValidCoord);
   }
 }

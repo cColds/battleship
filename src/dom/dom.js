@@ -200,17 +200,44 @@ const Dom = (() => {
   }
 
   function initBattleshipPage() {
+    function highlightAttack(board, [row, col], selector) {
+      const cell = document.querySelector(
+        `${selector} [data-coords="[${row}, ${col}]"]`
+      );
+      if (board[row][col] === "hit") {
+        cell.style.backgroundColor = "red";
+      } else {
+        cell.style.backgroundColor = "green";
+      }
+    }
+
     function attack(e) {
-      if (e.target.classList.contains("ai-board")) return;
+      if (
+        e.target.classList.contains("ai-board") ||
+        player.gameboard.areAllShipsSunk() ||
+        ai.gameboard.areAllShipsSunk()
+      )
+        return;
+
       const [row, col] = JSON.parse(e.target.dataset.coords);
 
-      player.attack([row, col], ai);
+      if (!Player.attack([row, col], ai)) return;
 
-      if (ai.gameboard.board[row][col] === "miss") {
-        const aiCell = document.querySelector(
-          `.ai-board [data-coords="[${row}, ${col}]"]`
-        );
-        aiCell.classList.add("invalid");
+      highlightAttack(ai.gameboard.board, [row, col], ".ai-board");
+      if (ai.gameboard.areAllShipsSunk()) {
+        console.log(`Player won`);
+        return;
+      }
+
+      Player.makeComputerAttack(player);
+      highlightAttack(
+        player.gameboard.board,
+        player.gameboard.latestReceivedAttack,
+        ".player-board"
+      );
+
+      if (player.gameboard.areAllShipsSunk()) {
+        console.log(`AI won`);
       }
     }
 
