@@ -127,6 +127,7 @@ const Dom = (() => {
       placeShipsBoard.classList.remove("disable");
       rotateShip.style.display = "block";
       placeShipsHint.textContent = "Place your carrier";
+      startGame.classList.add("disabled");
     }
 
     function highlightShipPreview(e) {
@@ -156,6 +157,7 @@ const Dom = (() => {
       player.placeAllShipsRandomly();
       clearHighlightShip();
       rotateShip.style.display = "block";
+      startGame.classList.remove("disabled");
 
       const { ships } = player.gameboard;
       ships.forEach((ship) => {
@@ -167,7 +169,7 @@ const Dom = (() => {
           "ship"
         );
       });
-      placeShipsBoard.classList.add("disable");
+      placeShipsBoard.classList.add("disabled");
       placeShipsHint.textContent = "";
       rotateShip.style.display = "none";
     }
@@ -204,6 +206,7 @@ const Dom = (() => {
         placeShipsHint.textContent = "";
         placeShipsBoard.classList.add("disable");
         rotateShip.style.display = "none";
+        startGame.classList.remove("disabled");
       } else {
         placeShipsHint.textContent = `Place your ${nextShip.name}`;
       }
