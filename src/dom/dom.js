@@ -132,9 +132,10 @@ const Dom = (() => {
     function highlightShipPreview(e) {
       clearHighlightShipPreview();
       const [currentShip] = player.shipsToPlace;
-      if (!currentShip) return;
+      if (!currentShip || !e.target.dataset.coords) return;
 
       const coords = JSON.parse(e.target.dataset.coords);
+
       const isValidShipPlacement = player.gameboard.canPlaceShip(
         currentShip,
         coords,
@@ -232,11 +233,8 @@ const Dom = (() => {
       const cell = document.querySelector(
         `${selector} [data-coords="[${row}, ${col}]"]`
       );
-      if (board[row][col] === "hit") {
-        cell.style.backgroundColor = "red";
-      } else {
-        cell.style.backgroundColor = "green";
-      }
+
+      cell.classList.add(board[row][col]);
     }
 
     function clearGameboardCellsHighlighted() {
@@ -244,6 +242,8 @@ const Dom = (() => {
       cells.forEach((cell) => {
         cell.style.backgroundColor = "";
         cell.classList.remove("ship");
+        cell.classList.remove("hit");
+        cell.classList.remove("miss");
       });
     }
 

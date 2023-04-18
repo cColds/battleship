@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1681620659884" clover="3.2.0">
-  <project timestamp="1681620659884" name="All files">
+<coverage generated="1681787615763" clover="3.2.0">
+  <project timestamp="1681787615763" name="All files">
     <metrics statements="39" coveredstatements="38" conditionals="8" coveredconditionals="7" methods="11" coveredmethods="10" elements="58" coveredelements="55" complexity="0" loc="39" ncloc="39" packages="1" files="1" classes="1"/>
     <file name="player.js" path="/home/thaddaeus/Desktop/Projects/battleship/src/game-logic/player.js">
       <metrics statements="39" coveredstatements="38" conditionals="8" coveredconditionals="7" methods="11" coveredmethods="10"/>
@@ -30,7 +30,7 @@
       <line num="57" count="40" type="stmt"/>
       <line num="58" count="400" type="stmt"/>
       <line num="59" count="4000" type="cond" truecount="2" falsecount="0"/>
-      <line num="62" count="2562" type="stmt"/>
+      <line num="62" count="2577" type="stmt"/>
       <line num="67" count="40" type="stmt"/>
       <line num="68" count="40" type="stmt"/>
       <line num="73" count="1" type="stmt"/>
