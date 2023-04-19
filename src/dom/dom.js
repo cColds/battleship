@@ -88,7 +88,6 @@ const Dom = (() => {
       battleshipBoard.classList.add("active");
       clearHighlightShip();
       ai.placeAllShipsRandomly();
-
       player.gameboard.ships.forEach((ship) => {
         highlightShip(
           ship.coords,
@@ -106,6 +105,7 @@ const Dom = (() => {
       placeShipsBoard.classList.remove("disabled");
       rotateShip.style.display = "block";
       placeShipsHint.textContent = "Place your carrier";
+      startGame.classList.add("disabled");
     }
 
     function clearHighlightShipPreview() {
