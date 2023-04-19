@@ -103,7 +103,7 @@ const Dom = (() => {
         ? playerNameInput.value.trim()
         : "Player";
 
-      placeShipsBoard.classList.remove("disable");
+      placeShipsBoard.classList.remove("disabled");
       rotateShip.style.display = "block";
       placeShipsHint.textContent = "Place your carrier";
     }
@@ -124,7 +124,7 @@ const Dom = (() => {
       player.restoreShipsToPlace();
       player.gameboard.resetGameboard();
       clearHighlightShip();
-      placeShipsBoard.classList.remove("disable");
+      placeShipsBoard.classList.remove("disabled");
       rotateShip.style.display = "block";
       placeShipsHint.textContent = "Place your carrier";
       startGame.classList.add("disabled");
@@ -204,7 +204,7 @@ const Dom = (() => {
 
       if (!player.shipsToPlace.length) {
         placeShipsHint.textContent = "";
-        placeShipsBoard.classList.add("disable");
+        placeShipsBoard.classList.add("disabled");
         rotateShip.style.display = "none";
         startGame.classList.remove("disabled");
       } else {

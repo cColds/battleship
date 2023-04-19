@@ -71,7 +71,7 @@ main {
 
       &:focus {
         outline: 2px solid $secondary-pale-blue;
-        box-shadow: 0px 0px 15px -3px #add8e6;
+        box-shadow: 0px 0px 15px -3px $secondary-pale-blue;
       }
     }
 
@@ -89,7 +89,7 @@ main {
 
   // GAMEBOARD
 
-  .disable {
+  .disabled {
     pointer-events: none;
   }
 
@@ -128,7 +128,7 @@ main {
       }
 
       .cell {
-        border: 1px solid #ddd;
+        border: 1px solid rgb(170, 170, 170);
         transition: 0.5s;
         cursor: crosshair;
         background-color: transparent;
@@ -152,7 +152,8 @@ main {
       }
 
       .cell.ship {
-        background-color: #6f7070;
+        background-color: $secondary-pale-blue;
+        filter: blur(1px);
       }
     }
   }
