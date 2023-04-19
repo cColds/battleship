@@ -128,32 +128,25 @@ main {
       }
 
       .cell {
-        border: 1px solid rgb(170, 170, 170);
+        border: 1px solid #64748b;
         transition: 0.5s;
         cursor: crosshair;
         background-color: transparent;
       }
 
-      .cell.valid {
-        background-color: green;
+      .cell.valid,
+      .cell.hit,
+      .cell.ship {
+        background-color: $secondary-pale-blue;
       }
 
       .cell.invalid {
-        background-color: red;
+        background-color: #b91c1c;
         cursor: not-allowed;
       }
 
       .cell.miss {
         background-color: grey;
-      }
-
-      .cell.hit {
-        background-color: red;
-      }
-
-      .cell.ship {
-        background-color: $secondary-pale-blue;
-        filter: blur(1px);
       }
     }
   }
