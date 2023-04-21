@@ -1,0 +1,25 @@
+@use "variables";
+
+.gameboard-container {
+  display: none;
+}
+
+.gameboard-container.active {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  padding: 15px;
+  flex-wrap: wrap;
+
+  .player-board-container,
+  .ai-board-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .board-name {
+      padding: 10px;
+      text-transform: uppercase;
+    }
+  }
+}

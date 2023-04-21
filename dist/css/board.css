@@ -1,0 +1,33 @@
+.board {
+  box-shadow: rgba(133, 144, 155, 0.2) 0px 8px 24px;
+  border: 1px solid white;
+  display: grid;
+  grid-template-rows: repeat(10, calc(clamp(200px, 30vw, 500px) / 10));
+  grid-template-columns: repeat(10, calc(clamp(200px, 30vw, 500px) / 10));
+}
+
+.cell {
+  border: 1px solid #64748b;
+  transition: 0.5s;
+  cursor: crosshair;
+  background-color: transparent;
+}
+
+.cell.valid,
+.cell.hit,
+.cell.ship {
+  background-color: #add8e6;
+}
+
+.cell.invalid {
+  background-color: #b91c1c;
+  cursor: not-allowed;
+}
+
+.cell.miss {
+  background-color: grey;
+}
+
+.disabled {
+  pointer-events: none;
+}/*# sourceMappingURL=board.css.map */

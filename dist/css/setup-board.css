@@ -1,0 +1,35 @@
+.setup-board-container.active .rotate-ship,
+.setup-board-container.active .setup-board-buttons button {
+  padding: 15px;
+  border-radius: 5px;
+  background-color: #add8e6;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  transition: ease-in-out 0.5s;
+  color: black;
+  flex-grow: 1;
+  font-size: 0.85rem;
+}
+
+.setup-board-container {
+  display: none;
+}
+
+.setup-board-container.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+}
+.setup-board-container.active .setup-board-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+.setup-board-container.active .setup-board-buttons .setup-board-start-game.disabled {
+  opacity: 0.4;
+  background-color: grey;
+  cursor: not-allowed;
+}/*# sourceMappingURL=setup-board.css.map */

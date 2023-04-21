@@ -1,21 +1,19 @@
 /* eslint-disable no-param-reassign */
 import Player from "../game-logic/player";
 
-const Dom = (() => {
+const dom = (() => {
   const player = new Player();
   const ai = new Player();
   const playerBoard = document.querySelector(".player-board");
   const aiBoard = document.querySelector(".ai-board");
-  const placeShipsPage = document.querySelector(".place-ships-container");
-  const placeShipsBoard = document.querySelector(".place-ships-board");
+  const setupBoardContainer = document.querySelector(".setup-board-container");
+  const setupBoard = document.querySelector(".setup-board");
+  const gameboardContainer = document.querySelector(".gameboard-container");
 
-  const placeShipsContainer = document.querySelector(".place-ships-container");
   const playerNameInput = document.querySelector("#player-name-input");
   const playerBoardName = document.querySelector(
     ".player-board-container .board-name"
   );
-
-  const battleshipBoard = document.querySelector(".battleship-gameboard");
 
   function initGameboardCells(board) {
     for (let i = 0; i < 100; i += 1) {
@@ -35,25 +33,23 @@ const Dom = (() => {
     }
   }
 
-  function initStartGameHomepage() {
-    const startGameContainer = document.querySelector(".start-game-container");
-    const startGameHomepage = document.querySelector(".homepage-start-game");
-    const placeShipsGameboard = document.querySelector(
-      ".place-ships-gameboard"
-    );
-    startGameHomepage.addEventListener("click", () => {
-      startGameContainer.classList.remove("active");
-      placeShipsPage.classList.add("active");
-      placeShipsGameboard.classList.add("active");
+  function initHomepage() {
+    const homepageContainer = document.querySelector(".homepage-container");
+
+    homepageContainer.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      homepageContainer.classList.remove("active");
+      setupBoardContainer.classList.add("active");
     });
   }
 
-  function initPlaceShipsPage() {
+  function initSetupBoard() {
     const rotateShip = document.querySelector(".rotate-ship");
-    const placeShipsHint = document.querySelector(".place-ships-hint");
+    const setupBoardMessage = document.querySelector(".setup-board-message");
     const randomizeShipsButton = document.querySelector(".randomize-ships");
     const resetBoard = document.querySelector(".reset-board");
-    const startGame = document.querySelector(".place-ships-start-game");
+    const startGame = document.querySelector(".setup-board-start-game");
     let currentShipOrientation = "horizontal";
 
     function highlightShip(coords, ship, orientation, selector, className) {
@@ -73,9 +69,7 @@ const Dom = (() => {
     }
 
     function clearHighlightShip() {
-      const highlightedCells = document.querySelectorAll(
-        ".place-ships-board .ship"
-      );
+      const highlightedCells = document.querySelectorAll(".setup-board .ship");
       highlightedCells.forEach((highlightedCell) =>
         highlightedCell.classList.remove("ship")
       );
@@ -84,8 +78,8 @@ const Dom = (() => {
     function startGameHandler() {
       if (player.gameboard.ships.length !== 5) return;
 
-      placeShipsContainer.classList.remove("active");
-      battleshipBoard.classList.add("active");
+      setupBoardContainer.classList.remove("active");
+      gameboardContainer.classList.add("active");
       clearHighlightShip();
       ai.placeAllShipsRandomly();
       player.gameboard.ships.forEach((ship) => {
@@ -98,13 +92,11 @@ const Dom = (() => {
         );
       });
 
-      playerBoardName.textContent = playerNameInput.value.trim()
-        ? playerNameInput.value.trim()
-        : "Player";
+      playerBoardName.textContent = playerNameInput.value.trim() || "Player";
 
-      placeShipsBoard.classList.remove("disabled");
+      setupBoard.classList.remove("disabled");
       rotateShip.style.display = "block";
-      placeShipsHint.textContent = "Place your carrier";
+      setupBoardMessage.textContent = "Place your carrier";
       startGame.classList.add("disabled");
     }
 
@@ -124,9 +116,9 @@ const Dom = (() => {
       player.restoreShipsToPlace();
       player.gameboard.resetGameboard();
       clearHighlightShip();
-      placeShipsBoard.classList.remove("disabled");
+      setupBoard.classList.remove("disabled");
       rotateShip.style.display = "block";
-      placeShipsHint.textContent = "Place your carrier";
+      setupBoardMessage.textContent = "Place your carrier";
       startGame.classList.add("disabled");
     }
 
@@ -147,7 +139,7 @@ const Dom = (() => {
         coords,
         currentShip,
         currentShipOrientation,
-        ".place-ships-board",
+        ".setup-board",
         cellValidityName
       );
     }
@@ -165,12 +157,12 @@ const Dom = (() => {
           ship.coords,
           ship,
           ship.orientation,
-          ".place-ships-board",
+          ".setup-board",
           "ship"
         );
       });
-      placeShipsBoard.classList.add("disabled");
-      placeShipsHint.textContent = "";
+      setupBoard.classList.add("disabled");
+      setupBoardMessage.textContent = "";
       rotateShip.style.display = "none";
     }
 
@@ -195,7 +187,7 @@ const Dom = (() => {
         coords,
         currentShip,
         currentShip.orientation,
-        ".place-ships-board",
+        ".setup-board",
         "ship"
       );
       player.shipsToPlace.shift();
@@ -203,12 +195,12 @@ const Dom = (() => {
       const [nextShip] = player.shipsToPlace;
 
       if (!player.shipsToPlace.length) {
-        placeShipsHint.textContent = "";
-        placeShipsBoard.classList.add("disabled");
+        setupBoardMessage.textContent = "";
+        setupBoard.classList.add("disabled");
         rotateShip.style.display = "none";
         startGame.classList.remove("disabled");
       } else {
-        placeShipsHint.textContent = `Place your ${nextShip.name}`;
+        setupBoardMessage.textContent = `Place your ${nextShip.name}`;
       }
     }
 
@@ -217,16 +209,16 @@ const Dom = (() => {
         currentShipOrientation === "horizontal" ? "vertical" : "horizontal";
     }
 
-    placeShipsBoard.addEventListener("mouseover", highlightShipPreview);
-    placeShipsBoard.addEventListener("mouseleave", clearHighlightShipPreview);
-    placeShipsBoard.addEventListener("click", placeShip);
+    setupBoard.addEventListener("mouseover", highlightShipPreview);
+    setupBoard.addEventListener("mouseleave", clearHighlightShipPreview);
+    setupBoard.addEventListener("click", placeShip);
     rotateShip.addEventListener("click", invertBoardOrientation);
     randomizeShipsButton.addEventListener("click", randomizeShips);
     resetBoard.addEventListener("click", resetBoardHandler);
     startGame.addEventListener("click", startGameHandler);
   }
 
-  function initBattleshipPage() {
+  function initGameboard() {
     const modalOverlay = document.querySelector(".modal-overlay");
     const gameOverText = document.querySelector(".game-over-text");
     const playAgain = document.querySelector(".play-again");
@@ -260,8 +252,8 @@ const Dom = (() => {
 
       clearGameboardCellsHighlighted();
       modalOverlay.classList.remove("active");
-      battleshipBoard.classList.remove("active");
-      placeShipsContainer.classList.add("active");
+      gameboardContainer.classList.remove("active");
+      setupBoardContainer.classList.add("active");
     }
 
     function attack(e) {
@@ -305,18 +297,18 @@ const Dom = (() => {
   function initialize() {
     initGameboardCells(playerBoard);
     initGameboardCells(aiBoard);
-    initGameboardCells(placeShipsBoard);
+    initGameboardCells(setupBoard);
 
     initGameboardCellCoords(playerBoard);
     initGameboardCellCoords(aiBoard);
-    initGameboardCellCoords(placeShipsBoard);
+    initGameboardCellCoords(setupBoard);
 
-    initStartGameHomepage();
-    initPlaceShipsPage();
-    initBattleshipPage();
+    initHomepage();
+    initSetupBoard();
+    initGameboard();
   }
 
   return { initialize };
 })();
 
-export default Dom;
+export default dom;

@@ -5,60 +5,68 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Battleship</title>
-    <link rel="stylesheet" href="./style.css" />
-  <script defer src="main.9dd058a9be75a8c473aa.js"></script></head>
+    <link rel="stylesheet" href="./css/homepage.css" />
+    <link rel="stylesheet" href="./css/modal.css" />
+    <link rel="stylesheet" href="./css/setup-board.css" />
+    <link rel="stylesheet" href="./css/gameboard.css" />
+    <link rel="stylesheet" href="./css/board.css" />
+    <link rel="stylesheet" href="./css/main.css" />
+  <script defer src="main.44b2b98a424015e93944.js"></script></head>
 
   <body>
     <header>
       <h1>Battleship</h1>
     </header>
     <main>
-      <div class="start-game-container active">
-        <label for="player-name-input">Enter player name</label>
-        <input
-          type="text"
-          placeholder="Player"
-          id="player-name-input"
-          maxlength="25"
-        />
-        <button class="homepage-start-game">Start Game</button>
+      <div class="homepage-container active">
+        <form onsubmit="return false;">
+          <label for="player-name-input">Enter player name</label>
+          <input
+            type="text"
+            placeholder="Player"
+            id="player-name-input"
+            maxlength="25"
+          />
+          <button class="homepage-start-game">Start Game</button>
+        </form>
       </div>
 
-      <div class="gameboard-container battleship-gameboard">
-        <div class="player-board-container board-container">
+      <div class="gameboard-container">
+        <div class="player-board-container">
           <h2 class="board-name">Player</h2>
           <div class="player-board board"></div>
         </div>
 
-        <div class="ai-board-container board-container">
+        <div class="ai-board-container">
           <h2 class="board-name">AI</h2>
           <div class="ai-board board"></div>
         </div>
       </div>
 
-      <div class="modal-overlay">
-        <div class="modal">
-          <header><h2 class="game-over-text"></h2></header>
-          <div class="modal-content">
-            <div class="modal-button-container">
-              <button class="play-again">Play Again</button>
-              <button class="new-game">New Game</button>
-            </div>
-          </div>
+      <div class="setup-board-container">
+        <div class="setup-board-message">Place your carrier</div>
+        <button class="rotate-ship">Rotate Ship</button>
+
+        <div class="setup-board board"></div>
+
+        <div class="setup-board-buttons">
+          <button class="randomize-ships">Randomize Ships</button>
+          <button class="reset-board">Reset Board</button>
+          <button class="setup-board-start-game disabled">Start Game</button>
         </div>
       </div>
 
-      <div class="place-ships-container">
-        <div class="gameboard-container place-ships-gameboard">
-          <div class="place-ships-hint">Place your carrier</div>
-          <button class="rotate-ship">Rotate Ship</button>
-          <div class="place-ships-board-container board-container">
-            <div class="place-ships-board board"></div>
-          </div>
-          <div class="place-ships-buttons">
-            <button class="randomize-ships">Randomize Ships</button>
-            <button class="reset-board">Reset Board</button>
-            <button class="place-ships-start-game disabled">Start Game</button>
+      <div class="modal-overlay">
+        <div class="modal">
+          <header>
+            <h2 class="game-over-text"></h2>
+          </header>
+
+          <div class="modal-content">
+            <div class="modal-buttons">
+              <button class="play-again">Play Again</button>
+              <button class="new-game">New Game</button>
+            </div>
           </div>
         </div>
       </div>

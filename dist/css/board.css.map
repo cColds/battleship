@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/scss/board.scss","board.css","../../src/scss/_variables.scss"],"names":[],"mappings":"AAEA;EAEE,iDAAA;EACA,uBAAA;EACA,aAAA;EACA,oEAAA;EACA,uEAAA;ACFF;;ADKA;EACE,yBAAA;EACA,gBAAA;EACA,iBAAA;EACA,6BAAA;ACFF;;ADKA;;;EAGE,yBEpBqB;ADkBvB;;ADKA;EACE,yBAAA;EACA,mBAAA;ACFF;;ADKA;EACE,sBAAA;ACFF;;ADKA;EACE,oBAAA;ACFF","file":"board.css"}
