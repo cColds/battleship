@@ -1,0 +1,22 @@
+.gameboard-container {
+  display: none;
+}
+
+.gameboard-container.active {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  padding: 15px;
+  flex-wrap: wrap;
+}
+.gameboard-container.active .player-board-container,
+.gameboard-container.active .ai-board-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.gameboard-container.active .player-board-container .board-name,
+.gameboard-container.active .ai-board-container .board-name {
+  padding: 10px;
+  text-transform: uppercase;
+}/*# sourceMappingURL=gameboard.css.map */

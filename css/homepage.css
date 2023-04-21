@@ -1,0 +1,38 @@
+.homepage-container.active .homepage-start-game {
+  padding: 15px;
+  border-radius: 5px;
+  background-color: #add8e6;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  transition: ease-in-out 0.5s;
+  color: black;
+  flex-grow: 1;
+  font-size: 0.85rem;
+}
+
+.homepage-container {
+  display: none;
+}
+
+.homepage-container.active {
+  display: block;
+  font-weight: bold;
+}
+.homepage-container.active form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.homepage-container.active #player-name-input {
+  border-radius: 5px;
+  background-color: transparent;
+  color: white;
+  outline: 2px solid white;
+  padding-left: 10px;
+  height: 30px;
+}
+.homepage-container.active #player-name-input:focus {
+  outline: 2px solid #add8e6;
+  box-shadow: 0px 0px 15px -3px #add8e6;
+}/*# sourceMappingURL=homepage.css.map */
