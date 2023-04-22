@@ -32,11 +32,11 @@ const gameUI = (() => {
   }
 
   function initSetupBoard() {
-    const rotateShip = document.querySelector(".rotate-ship");
+    const rotateShipBtn = document.querySelector(".rotate-ship");
     const setupBoardMessage = document.querySelector(".setup-board-message");
-    const randomizeShipsButton = document.querySelector(".randomize-ships");
-    const resetBoard = document.querySelector(".reset-board");
-    const startGame = document.querySelector(".setup-board-start-game");
+    const randomizeShipsBtn = document.querySelector(".randomize-ships");
+    const resetBoardBtn = document.querySelector(".reset-board");
+    const startGameBtn = document.querySelector(".setup-board-start-game");
     const playerNameInput = document.querySelector("#player-name-input");
     const playerBoardName = document.querySelector(
       ".player-board-container .board-name"
@@ -61,13 +61,13 @@ const gameUI = (() => {
       clearHighlightedCells(".setup-board .ship", "ship");
     }
 
-    function startGameHandler() {
+    function startGame() {
       if (game.player.gameboard.ships.length !== 5) return;
 
       setupBoardContainer.classList.remove("active");
       gameboardContainer.classList.add("active");
       clearHighlightShip();
-      game.ai.placeAllShipsRandomly();
+      game.ai.randomizeShips();
       game.player.gameboard.ships.forEach((ship) => {
         highlightShip(
           ship.coords,
@@ -82,7 +82,7 @@ const gameUI = (() => {
 
       setupBoard.classList.remove("disabled");
       setupBoardMessage.textContent = "Place your carrier";
-      startGame.classList.add("disabled");
+      startGameBtn.classList.add("disabled");
     }
 
     function clearHighlightShipPreview() {
@@ -96,12 +96,12 @@ const gameUI = (() => {
       );
     }
 
-    function resetBoardHandler() {
+    function resetBoard() {
       game.resetGame();
       clearHighlightShip();
       setupBoard.classList.remove("disabled");
       setupBoardMessage.textContent = "Place your carrier";
-      startGame.classList.add("disabled");
+      startGameBtn.classList.add("disabled");
     }
 
     function highlightShipPreview(e) {
@@ -127,10 +127,10 @@ const gameUI = (() => {
     }
 
     function randomizeShips() {
-      game.player.restoreShipsToPlace();
-      game.player.placeAllShipsRandomly();
+      game.player.resetShipsPlaced();
+      game.player.randomizeShips();
       clearHighlightShip();
-      startGame.classList.remove("disabled");
+      startGameBtn.classList.remove("disabled");
 
       const { ships } = game.player.gameboard;
       ships.forEach((ship) => {
@@ -181,7 +181,7 @@ const gameUI = (() => {
       if (!game.player.shipsToPlace.length) {
         setupBoardMessage.textContent = "Ready for battle!";
         setupBoard.classList.add("disabled");
-        startGame.classList.remove("disabled");
+        startGameBtn.classList.remove("disabled");
       } else {
         setupBoardMessage.textContent = `Place your ${nextShip.name}`;
       }
@@ -195,17 +195,17 @@ const gameUI = (() => {
     setupBoard.addEventListener("mouseover", highlightShipPreview);
     setupBoard.addEventListener("mouseleave", clearHighlightShipPreview);
     setupBoard.addEventListener("click", placeShip);
-    rotateShip.addEventListener("click", invertBoardOrientation);
-    randomizeShipsButton.addEventListener("click", randomizeShips);
-    resetBoard.addEventListener("click", resetBoardHandler);
-    startGame.addEventListener("click", startGameHandler);
+    rotateShipBtn.addEventListener("click", invertBoardOrientation);
+    randomizeShipsBtn.addEventListener("click", randomizeShips);
+    resetBoardBtn.addEventListener("click", resetBoard);
+    startGameBtn.addEventListener("click", startGame);
   }
 
   function initGameboard() {
     const modalOverlay = document.querySelector(".modal-overlay");
     const gameOverText = document.querySelector(".game-over-text");
-    const playAgain = document.querySelector(".play-again");
-    const newGame = document.querySelector(".new-game");
+    const playAgainBtn = document.querySelector(".play-again");
+    const newGameBtn = document.querySelector(".new-game");
 
     function highlightAttack(board, [row, col], selector) {
       const cell = document.querySelector(
@@ -223,7 +223,7 @@ const gameUI = (() => {
       ]);
     }
 
-    function playAgainHandler() {
+    function playAgain() {
       game.resetGame();
 
       clearGameboardCellsHighlighted();
@@ -261,8 +261,8 @@ const gameUI = (() => {
     }
 
     aiBoard.addEventListener("click", attack);
-    playAgain.addEventListener("click", playAgainHandler);
-    newGame.addEventListener("click", () => window.location.reload());
+    playAgainBtn.addEventListener("click", playAgain);
+    newGameBtn.addEventListener("click", () => window.location.reload());
   }
 
   function initialize() {
@@ -279,3 +279,6 @@ const gameUI = (() => {
 })();
 
 export default gameUI;
+
+// implement better ai
+//

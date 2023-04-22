@@ -9,7 +9,7 @@ beforeEach(() => {
 
 describe("player/ai", () => {
   it("should place ships randomly", () => {
-    player.placeAllShipsRandomly();
+    player.randomizeShips();
     const { ships } = player.gameboard;
     const cantPlaceShips = ships.every(
       (ship) =>
@@ -24,9 +24,9 @@ describe("player/ai", () => {
   });
 
   it("should be able to place ships randomly more than once", () => {
-    player.placeAllShipsRandomly();
+    player.randomizeShips();
     const shipCoordsOne = JSON.stringify(player.gameboard.ships);
-    player.placeAllShipsRandomly();
+    player.randomizeShips();
     const shipCoordsTwo = JSON.stringify(player.gameboard.ships);
 
     const areShipCoordsEqual = shipCoordsOne === shipCoordsTwo;
@@ -35,15 +35,15 @@ describe("player/ai", () => {
   });
 
   it("should make player attack", () => {
-    player.placeAllShipsRandomly();
-    ai.placeAllShipsRandomly();
+    player.randomizeShips();
+    ai.randomizeShips();
     Player.attack([3, 5], ai);
     expect(ai.gameboard.board[3][5]).not.toBe(null);
   });
 
   it("should make random attack for ai", () => {
-    player.placeAllShipsRandomly();
-    ai.placeAllShipsRandomly();
+    player.randomizeShips();
+    ai.randomizeShips();
 
     Player.makeComputerAttack(player);
     const [computerRow, computerCol] = player.gameboard.latestReceivedAttack;

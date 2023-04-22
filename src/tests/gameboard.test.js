@@ -182,7 +182,7 @@ describe("gameboard check if ships are all sunk", () => {
 
 describe("reset gameboard state", () => {
   it("should reset gameboard", () => {
-    player.placeAllShipsRandomly();
+    player.randomizeShips();
 
     player.gameboard.resetGameboard();
 

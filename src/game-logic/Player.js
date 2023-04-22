@@ -37,7 +37,7 @@ export default class Player {
   static getRandomValidCoords = (validCoords) =>
     validCoords[Player.getRandomInt(validCoords.length)];
 
-  restoreShipsToPlace() {
+  resetShipsPlaced() {
     this.shipsToPlace = [
       this.carrier,
       this.battleship,
@@ -47,7 +47,7 @@ export default class Player {
     ];
   }
 
-  placeAllShipsRandomly() {
+  randomizeShips() {
     this.gameboard.resetGameboard();
 
     const randomShips = Player.shuffleArray(this.shipsToPlace);
