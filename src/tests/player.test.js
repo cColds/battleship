@@ -1,4 +1,4 @@
-import Player from "../game-logic/player";
+import Player from "../game-logic/Player";
 
 let player, ai;
 

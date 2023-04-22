@@ -16,6 +16,7 @@ module.exports = {
     new MiniCssExtractPlugin(),
   ],
   mode: "development",
+  devtool: "inline-source-map",
   module: {
     rules: [
       {

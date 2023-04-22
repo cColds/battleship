@@ -1,3 +1,3 @@
-import dom from "./dom/dom";
+import gameUI from "./dom/gameUI";
 
-dom.initialize();
+gameUI.initialize();

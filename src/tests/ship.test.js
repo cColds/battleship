@@ -1,4 +1,4 @@
-import Ship from "../game-logic/ship";
+import Ship from "../game-logic/Ship";
 
 let carrier, battleship, cruiser, submarine;
 

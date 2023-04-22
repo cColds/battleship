@@ -1,5 +1,5 @@
-import Gameboard from "./gameboard";
-import Ship from "./ship";
+import Gameboard from "./Gameboard";
+import Ship from "./Ship";
 
 export default class Player {
   constructor() {
@@ -39,11 +39,11 @@ export default class Player {
 
   restoreShipsToPlace() {
     this.shipsToPlace = [
-      new Ship("carrier", 5),
-      new Ship("battleship", 4),
-      new Ship("cruiser", 3),
-      new Ship("submarine", 3),
-      new Ship("destroyer", 2),
+      this.carrier,
+      this.battleship,
+      this.cruiser,
+      this.submarine,
+      this.destroyer,
     ];
   }
 

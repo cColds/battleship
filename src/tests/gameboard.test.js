@@ -1,6 +1,6 @@
-import Gameboard from "../game-logic/gameboard";
+import Gameboard from "../game-logic/Gameboard";
 import { sinkAllShips, sinkShip } from "./test-helpers";
-import Player from "../game-logic/player";
+import Player from "../game-logic/Player";
 
 let player, gameboard;
 

@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import Ship from "./ship";
+import Ship from "./Ship";
 
 export default class Gameboard {
   constructor() {
