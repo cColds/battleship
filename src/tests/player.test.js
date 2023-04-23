@@ -35,18 +35,42 @@ describe("player/ai", () => {
   });
 
   it("should make player attack", () => {
-    player.randomizeShips();
-    ai.randomizeShips();
     Player.attack([3, 5], ai);
 
     const [missedRow, missedCol] = ai.gameboard.shotsMissed;
     expect(missedRow === 3 && missedCol === 5);
   });
 
-  it("should make random attack for ai", () => {
-    player.randomizeShips();
-    ai.randomizeShips();
+  it("should be a valid coord", () => {
+    expect(
+      Player.getValidCoords(player).some(
+        ([targetRow, targetCol]) => targetRow === 0 && targetCol === 0
+      )
+    ).toBe(true);
 
+    Player.attack([0, 0], player);
+
+    expect(
+      Player.getValidCoords(player).some(
+        ([targetRow, targetCol]) => targetRow === 0 && targetCol === 0
+      )
+    ).toBe(false);
+  });
+
+  it("should remove attacked coordinates from valid coordinates list", () => {
+    const [row, col] = Player.getRandomValidCoords(
+      Player.getValidCoords(player)
+    );
+
+    player.gameboard.receiveAttack([row, col]);
+    expect(
+      Player.getValidCoords(player).some(
+        ([targetRow, targetCol]) => targetRow === row && targetCol === col
+      )
+    ).toBe(false);
+  });
+
+  it("should make random attack for ai", () => {
     Player.makeAiAttack(player);
     const [row, col] = player.gameboard.latestReceivedAttack;
     expect(player.gameboard.receiveAttack([row, col])).toBe(false);

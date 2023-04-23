@@ -70,13 +70,16 @@ export default class Player {
   }
 
   static getValidCoords(enemy) {
-    const enemyBoard = enemy.gameboard.board;
     const validCoords = [];
     for (let row = 0; row < 10; row += 1) {
       for (let col = 0; col < 10; col += 1) {
         if (
-          enemyBoard[row][col] === null ||
-          enemyBoard[row][col] instanceof Ship
+          !enemy.gameboard.shotsMissed.some(
+            ([targetRow, targetCol]) => targetRow === row && targetCol === col
+          ) &&
+          !enemy.gameboard.shotsHit.some(
+            ([targetRow, targetCol]) => targetRow === row && targetCol === col
+          )
         ) {
           validCoords.push([row, col]);
         }
