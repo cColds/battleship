@@ -1,10 +1,11 @@
 /* eslint-disable no-param-reassign */
-import Ship from "./Ship";
 
 export default class Gameboard {
   constructor() {
     this.board = Array.from({ length: 10 }, () => Array(10).fill(null));
-    this.ships = [];
+    this.ships = []; // prolly delete later
+    this.shotsMissed = [];
+    this.shotsHit = [];
   }
 
   static isOutOfBounds = ([row, col]) =>
@@ -15,9 +16,10 @@ export default class Gameboard {
       ? col + ship.length - 1
       : row + ship.length - 1;
 
-  areAllShipsSunk = () => this.ships.every((ship) => ship.isSunk());
+  static isCoordsFound = (array, [targetRow, targetCol]) =>
+    array.some(([row, col]) => row === targetRow && col === targetCol);
 
-  isHit = ([row, col]) => this.board[row][col] instanceof Ship;
+  areAllShipsSunk = () => this.ships.every((ship) => ship.isSunk());
 
   resetGameboard() {
     this.board = Array.from({ length: 10 }, () => Array(10).fill(null));
@@ -48,6 +50,7 @@ export default class Gameboard {
 
     ship.coords = [row, col];
     ship.orientation = orientation;
+    ship.id = this.ships.length;
     this.ships.push(ship);
 
     let i = 0;
@@ -64,18 +67,19 @@ export default class Gameboard {
   receiveAttack([row, col]) {
     if (
       Gameboard.isOutOfBounds([row, col]) ||
-      this.board[row][col] === "hit" ||
-      this.board[row][col] === "miss"
+      (this.board[row][col] && this.board[row][col].isSunk()) ||
+      Gameboard.isCoordsFound(this.shotsMissed, [row, col]) ||
+      Gameboard.isCoordsFound(this.shotsHit, [row, col])
     )
       return false;
 
-    this.latestReceivedAttack = [row, col];
+    this.latestReceivedAttack = [row, col]; // maybe store coords in constructor
 
-    if (!this.isHit([row, col])) {
-      this.board[row][col] = "miss";
+    if (!this.board[row][col]) {
+      this.shotsMissed.push([row, col]);
     } else {
       this.board[row][col].hit();
-      this.board[row][col] = "hit";
+      this.shotsHit.push([row, col]);
     }
 
     return true;

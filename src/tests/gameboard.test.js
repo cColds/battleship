@@ -135,13 +135,65 @@ describe("gameboard attack cell", () => {
     expect(gameboard.receiveAttack([3, 3])).toBe(true);
   });
 
-  it("should miss attack on invalid coordinates", () => {
+  it("should return false if attack is on invalid coordinates", () => {
     expect(gameboard.receiveAttack([-1, 3])).toBe(false);
   });
 
-  it("should miss attack on invalid coordinates", () => {
+  it("should return false if attack is on invalid coordinates", () => {
     expect(gameboard.receiveAttack([0, 10])).toBe(false);
   });
+
+  it("should add shot missed coordinates to shotsMissed array", () => {
+    gameboard.placeShip(player.carrier, [0, 0], "horizontal");
+    gameboard.receiveAttack([7, 2]);
+    gameboard.receiveAttack([6, 5]);
+
+    expect(gameboard.shotsMissed.length).toBe(2);
+
+    expect(
+      gameboard.shotsMissed.some(([row, col]) => row === 7 && col === 2)
+    ).toBe(true);
+
+    expect(
+      gameboard.shotsMissed.some(([row, col]) => row === 6 && col === 5)
+    ).toBe(true);
+  });
+
+  it("should add shot hit coordinates to shotsHit array", () => {
+    gameboard.placeShip(player.carrier, [3, 5], "horizontal");
+    gameboard.receiveAttack([3, 5]);
+    gameboard.receiveAttack([3, 6]);
+    gameboard.receiveAttack([3, 7]);
+    expect(gameboard.shotsHit.length).toBe(3);
+
+    expect(
+      gameboard.shotsHit.some(([row, col]) => row === 3 && col === 5)
+    ).toBe(true);
+
+    expect(
+      gameboard.shotsHit.some(([row, col]) => row === 3 && col === 6)
+    ).toBe(true);
+
+    expect(
+      gameboard.shotsHit.some(([row, col]) => row === 3 && col === 7)
+    ).toBe(true);
+  });
+});
+
+it("should not add shot missed coordinates to shotsMissed array if the same cell has been shot more than once", () => {
+  gameboard.placeShip(player.carrier, [3, 5], "horizontal");
+  gameboard.receiveAttack([0, 0]);
+  gameboard.receiveAttack([0, 0]);
+
+  expect(gameboard.shotsMissed.length).toBe(1);
+});
+
+it("should not add shot hit coordinates to shotsHit array if the same cell has been shot more than once", () => {
+  gameboard.placeShip(player.carrier, [3, 5], "horizontal");
+  gameboard.receiveAttack([3, 5]);
+  gameboard.receiveAttack([3, 5]);
+
+  expect(gameboard.shotsHit.length).toBe(1);
 });
 
 describe("gameboard check if ships are all sunk", () => {

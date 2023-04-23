@@ -38,16 +38,17 @@ describe("player/ai", () => {
     player.randomizeShips();
     ai.randomizeShips();
     Player.attack([3, 5], ai);
-    expect(ai.gameboard.board[3][5]).not.toBe(null);
+
+    const [missedRow, missedCol] = ai.gameboard.shotsMissed;
+    expect(missedRow === 3 && missedCol === 5);
   });
 
   it("should make random attack for ai", () => {
     player.randomizeShips();
     ai.randomizeShips();
 
-    Player.makeComputerAttack(player);
-    const [computerRow, computerCol] = player.gameboard.latestReceivedAttack;
-    const playerBoard = player.gameboard.board;
-    expect(playerBoard[computerRow][computerCol]).not.toBe(null);
+    Player.makeAiAttack(player);
+    const [row, col] = player.gameboard.latestReceivedAttack;
+    expect(player.gameboard.receiveAttack([row, col])).toBe(false);
   });
 });

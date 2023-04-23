@@ -90,7 +90,7 @@ export default class Player {
     return enemy.gameboard.receiveAttack([row, col]);
   }
 
-  static makeComputerAttack(player) {
+  static makeAiAttack(player) {
     const randomValidCoord = Player.getRandomValidCoords(
       Player.getValidCoords(player)
     );

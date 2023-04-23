@@ -2,29 +2,37 @@
 
 .board {
   $board-size: clamp(200px, 30vw, 500px);
-  box-shadow: rgba(133, 144, 155, 0.2) 0px 8px 24px;
-  border: 1px solid white;
+  box-shadow: #85909b33 0px 0px 5px 2px;
+
   display: grid;
   grid-template-rows: repeat(10, calc($board-size / 10));
   grid-template-columns: repeat(10, calc($board-size / 10));
 }
 
 .cell {
-  border: 1px solid #64748b;
-  transition: 0.5s;
+  outline: 1px solid #64748b; /* use instead of border */
+  margin-top: 1px;
+  margin-left: 1px;
   cursor: crosshair;
   background-color: transparent;
+
+  &:hover {
+    background-color: #1c3e6f;
+  }
 }
 
 .cell.valid,
-.cell.hit,
 .cell.ship {
   background-color: variables.$secondary-light-blue;
 }
 
+.cell.hit,
 .cell.invalid {
   background-color: #b91c1c;
-  cursor: not-allowed;
+}
+
+.cell.sunk {
+  filter: blur(1px) brightness(0.65);
 }
 
 .cell.miss {

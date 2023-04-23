@@ -13,10 +13,25 @@ const gameUI = (() => {
     for (let row = 0; row < 10; row += 1) {
       for (let col = 0; col < 10; col += 1) {
         const cell = document.createElement("button");
+
         cell.classList.add("cell");
         cell.dataset.coords = `[${row}, ${col}]`;
         board.appendChild(cell);
       }
+    }
+  }
+
+  function highlightShip(coords, ship, orientation, selector, className) {
+    for (let i = 0; i < ship.length; i += 1) {
+      let [row, col] = [coords[0], coords[1]];
+
+      if (orientation === "horizontal") col += i;
+      else row += i;
+      const cell = document.querySelector(
+        `${selector} [data-coords="[${row}, ${col}]"]`
+      );
+
+      if (cell) cell.classList.add(className);
     }
   }
 
@@ -42,20 +57,6 @@ const gameUI = (() => {
       ".player-board-container .board-name"
     );
     let shipOrientationState = "horizontal";
-
-    function highlightShip(coords, ship, orientation, selector, className) {
-      for (let i = 0; i < ship.length; i += 1) {
-        let [row, col] = [coords[0], coords[1]];
-
-        if (orientation === "horizontal") col += i;
-        else row += i;
-        const cell = document.querySelector(
-          `${selector} [data-coords="[${row}, ${col}]"]`
-        );
-
-        if (cell) cell.classList.add(className);
-      }
-    }
 
     function clearHighlightShip() {
       clearHighlightedCells(".setup-board .ship", "ship");
@@ -211,8 +212,14 @@ const gameUI = (() => {
       const cell = document.querySelector(
         `${selector} [data-coords="[${row}, ${col}]"]`
       );
+      const ship = board[row][col];
+      if (!ship) {
+        cell.classList.add("miss");
+      } else cell.classList.add("hit");
 
-      cell.classList.add(board[row][col]);
+      if (ship && ship.isSunk()) {
+        highlightShip(ship.coords, ship, ship.orientation, selector, "sunk");
+      }
     }
 
     function clearGameboardCellsHighlighted() {
@@ -220,6 +227,7 @@ const gameUI = (() => {
         "hit",
         "miss",
         "ship",
+        "sunk",
       ]);
     }
 
@@ -246,7 +254,7 @@ const gameUI = (() => {
         return;
       }
 
-      game.ai.constructor.makeComputerAttack(game.player);
+      game.ai.constructor.makeAiAttack(game.player);
       highlightAttack(
         game.player.gameboard.board,
         game.player.gameboard.latestReceivedAttack,
@@ -280,5 +288,4 @@ const gameUI = (() => {
 
 export default gameUI;
 
-// implement better ai
-//
+// AI is hitting same coords again
