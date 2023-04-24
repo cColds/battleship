@@ -1,3 +1,3 @@
-import gameUI from "./dom/gameUI";
+import gameUI from "./modules/dom/gameUI";
 
 gameUI.initialize();

@@ -1,5 +1,5 @@
 import Game from "../game-logic/Game";
-import { clearHighlightedCells } from "./helper";
+import { clearHighlightedCells, createGameboardCells } from "./dom-helpers";
 
 const gameUI = (() => {
   const game = new Game();
@@ -8,18 +8,6 @@ const gameUI = (() => {
   const setupBoardContainer = document.querySelector(".setup-board-container");
   const setupBoard = document.querySelector(".setup-board");
   const gameboardContainer = document.querySelector(".gameboard-container");
-
-  function createGameboardCells(board) {
-    for (let row = 0; row < 10; row += 1) {
-      for (let col = 0; col < 10; col += 1) {
-        const cell = document.createElement("button");
-
-        cell.classList.add("cell");
-        cell.dataset.coords = `[${row}, ${col}]`;
-        board.appendChild(cell);
-      }
-    }
-  }
 
   function highlightShip(coords, ship, orientation, selector, className) {
     for (let i = 0; i < ship.length; i += 1) {
@@ -257,7 +245,7 @@ const gameUI = (() => {
       game.ai.constructor.makeAiAttack(game.player);
       highlightAttack(
         game.player.gameboard.board,
-        game.player.gameboard.latestReceivedAttack,
+        game.player.gameboard.attackLog.at(-1),
         ".player-board"
       );
 
@@ -287,5 +275,3 @@ const gameUI = (() => {
 })();
 
 export default gameUI;
-
-// AI is hitting same coords again

@@ -1,11 +1,13 @@
+import isCoordFound from "../utils";
 /* eslint-disable no-param-reassign */
 
 export default class Gameboard {
   constructor() {
     this.board = Array.from({ length: 10 }, () => Array(10).fill(null));
-    this.ships = []; // prolly delete later
+    this.ships = [];
     this.shotsMissed = [];
     this.shotsHit = [];
+    this.attackLog = [];
   }
 
   static isOutOfBounds = ([row, col]) =>
@@ -15,9 +17,6 @@ export default class Gameboard {
     orientation === "horizontal"
       ? col + ship.length - 1
       : row + ship.length - 1;
-
-  static isCoordsFound = (array, [targetRow, targetCol]) =>
-    array.some(([row, col]) => row === targetRow && col === targetCol);
 
   areAllShipsSunk = () => this.ships.every((ship) => ship.isSunk());
 
@@ -68,12 +67,12 @@ export default class Gameboard {
     if (
       Gameboard.isOutOfBounds([row, col]) ||
       (this.board[row][col] && this.board[row][col].isSunk()) ||
-      Gameboard.isCoordsFound(this.shotsMissed, [row, col]) ||
-      Gameboard.isCoordsFound(this.shotsHit, [row, col])
+      isCoordFound(this.shotsMissed, [row, col]) ||
+      isCoordFound(this.shotsHit, [row, col])
     )
       return false;
 
-    this.latestReceivedAttack = [row, col]; // maybe store coords in constructor
+    this.attackLog.push([row, col]);
 
     if (!this.board[row][col]) {
       this.shotsMissed.push([row, col]);

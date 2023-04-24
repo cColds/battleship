@@ -1,5 +1,6 @@
 import Gameboard from "./Gameboard";
 import Ship from "./Ship";
+import isCoordFound from "../utils";
 
 export default class Player {
   constructor() {
@@ -74,12 +75,8 @@ export default class Player {
     for (let row = 0; row < 10; row += 1) {
       for (let col = 0; col < 10; col += 1) {
         if (
-          !enemy.gameboard.shotsMissed.some(
-            ([targetRow, targetCol]) => targetRow === row && targetCol === col
-          ) &&
-          !enemy.gameboard.shotsHit.some(
-            ([targetRow, targetCol]) => targetRow === row && targetCol === col
-          )
+          !isCoordFound(enemy.gameboard.shotsMissed, [row, col]) &&
+          !isCoordFound(enemy.gameboard.shotsHit, [row, col])
         ) {
           validCoords.push([row, col]);
         }

@@ -1,6 +1,7 @@
 import Gameboard from "../game-logic/Gameboard";
 import { sinkAllShips, sinkShip } from "./test-helpers";
 import Player from "../game-logic/Player";
+import isCoordFound from "../utils";
 
 let player, gameboard;
 
@@ -149,14 +150,8 @@ describe("gameboard attack cell", () => {
     gameboard.receiveAttack([6, 5]);
 
     expect(gameboard.shotsMissed.length).toBe(2);
-
-    expect(
-      gameboard.shotsMissed.some(([row, col]) => row === 7 && col === 2)
-    ).toBe(true);
-
-    expect(
-      gameboard.shotsMissed.some(([row, col]) => row === 6 && col === 5)
-    ).toBe(true);
+    expect(isCoordFound(gameboard.shotsMissed, [7, 2])).toBe(true);
+    expect(isCoordFound(gameboard.shotsMissed, [6, 5])).toBe(true);
   });
 
   it("should add shot hit coordinates to shotsHit array", () => {
@@ -164,19 +159,11 @@ describe("gameboard attack cell", () => {
     gameboard.receiveAttack([3, 5]);
     gameboard.receiveAttack([3, 6]);
     gameboard.receiveAttack([3, 7]);
+
     expect(gameboard.shotsHit.length).toBe(3);
-
-    expect(
-      gameboard.shotsHit.some(([row, col]) => row === 3 && col === 5)
-    ).toBe(true);
-
-    expect(
-      gameboard.shotsHit.some(([row, col]) => row === 3 && col === 6)
-    ).toBe(true);
-
-    expect(
-      gameboard.shotsHit.some(([row, col]) => row === 3 && col === 7)
-    ).toBe(true);
+    expect(isCoordFound(gameboard.shotsHit, [3, 5])).toBe(true);
+    expect(isCoordFound(gameboard.shotsHit, [3, 6])).toBe(true);
+    expect(isCoordFound(gameboard.shotsHit, [3, 7])).toBe(true);
   });
 });
 

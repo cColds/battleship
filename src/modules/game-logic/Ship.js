@@ -3,7 +3,7 @@ export default class Ship {
     this.name = name;
     this.length = length;
     this.timesHit = 0;
-    this.coords = null; // may be unnecessary
+    this.coords = null;
   }
 
   hit() {

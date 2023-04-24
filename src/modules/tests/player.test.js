@@ -1,4 +1,5 @@
 import Player from "../game-logic/Player";
+import isCoordFound from "../utils";
 
 let player, ai;
 
@@ -36,25 +37,17 @@ describe("player/ai", () => {
 
   it("should make player attack", () => {
     Player.attack([3, 5], ai);
+    const [row, col] = ai.gameboard.shotsMissed;
 
-    const [missedRow, missedCol] = ai.gameboard.shotsMissed;
-    expect(missedRow === 3 && missedCol === 5);
+    expect(row === 3 && col === 5);
   });
 
   it("should be a valid coord", () => {
-    expect(
-      Player.getValidCoords(player).some(
-        ([targetRow, targetCol]) => targetRow === 0 && targetCol === 0
-      )
-    ).toBe(true);
+    expect(isCoordFound(Player.getValidCoords(player), [0, 0])).toBe(true);
 
     Player.attack([0, 0], player);
 
-    expect(
-      Player.getValidCoords(player).some(
-        ([targetRow, targetCol]) => targetRow === 0 && targetCol === 0
-      )
-    ).toBe(false);
+    expect(isCoordFound(Player.getValidCoords(player), [0, 0])).toBe(false);
   });
 
   it("should remove attacked coordinates from valid coordinates list", () => {
@@ -63,16 +56,12 @@ describe("player/ai", () => {
     );
 
     player.gameboard.receiveAttack([row, col]);
-    expect(
-      Player.getValidCoords(player).some(
-        ([targetRow, targetCol]) => targetRow === row && targetCol === col
-      )
-    ).toBe(false);
+    expect(isCoordFound(Player.getValidCoords(player), [row, col])).toBe(false);
   });
 
   it("should make random attack for ai", () => {
     Player.makeAiAttack(player);
-    const [row, col] = player.gameboard.latestReceivedAttack;
+    const [row, col] = player.gameboard.attackLog.at(-1);
     expect(player.gameboard.receiveAttack([row, col])).toBe(false);
   });
 });
