@@ -10,15 +10,24 @@
 }
 
 .cell {
-  outline: 1px solid #64748b; /* use instead of border */
-  margin-top: 1px;
-  margin-left: 1px;
   cursor: crosshair;
   background-color: transparent;
 
   &:hover {
     background-color: #1c3e6f;
   }
+}
+
+// DONT STYLE BORDER-RIGHT FOR THE LAST COL OF EACH ROW
+
+.cell:not(:nth-child(10n)) {
+  border-right: 1px solid #64748b;
+}
+
+// DONT STYLE BORDER-BOTTOM FOR EVERY COL OF THE LAST ROW
+
+.cell:not(:nth-child(n + 91):nth-child(-n + 100)) {
+  border-bottom: 1px solid #64748b;
 }
 
 .cell.valid,
