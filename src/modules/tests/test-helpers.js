@@ -15,4 +15,11 @@ function sinkAllShips(ships, gameboard) {
   });
 }
 
-export { sinkAllShips, sinkShip };
+function isAdjacentTo([rowOne, colOne], [rowTwo, colTwo]) {
+  return (
+    (rowOne === rowTwo && Math.abs(colOne - colTwo) === 1) ||
+    (colOne === colTwo && Math.abs(rowOne - rowTwo) === 1)
+  );
+}
+
+export { sinkAllShips, sinkShip, isAdjacentTo };

@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-
 function clearHighlightedCells(selector, classes) {
   const cells = document.querySelectorAll(selector);
 

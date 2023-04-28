@@ -242,7 +242,7 @@ const gameUI = (() => {
         return;
       }
 
-      game.ai.constructor.makeAiAttack(game.player);
+      game.ai.makeAiAttack(game.player);
       highlightAttack(
         game.player.gameboard.board,
         game.player.gameboard.attackLog.at(-1),
