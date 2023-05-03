@@ -146,30 +146,30 @@ export default class Player {
   }
 
   getValidAdjacentCoords(player) {
-    let adjacentCoord;
+    let adjacentCoords;
     const lastAttack = player.gameboard.attackLog.at(-1);
     const isLastAttackHit = Player.isHit(lastAttack, player);
     if (!isLastAttackHit) {
-      adjacentCoord = this.getAdjacentCoords(this.aiInitialHitCoord);
+      adjacentCoords = this.getAdjacentCoords(this.aiInitialHitCoord).filter(
+        (coord) => Player.filterInvalidCoords(coord, player)
+      );
       this.aiCoordTracker = null;
     } else {
       this.aiCoordTracker = player.gameboard.shotsHit.at(-1);
-      adjacentCoord = this.getAdjacentCoords(this.aiCoordTracker);
+      adjacentCoords = this.getAdjacentCoords(this.aiCoordTracker).filter(
+        (coord) => Player.filterInvalidCoords(coord, player)
+      );
     }
 
-    let validAdjacentCoords = adjacentCoord.filter((coord) =>
-      Player.filterInvalidCoords(coord, player)
-    );
-
-    if (!adjacentCoord.length) {
-      adjacentCoord = this.getAdjacentCoords(this.aiInitialHitCoord);
+    if (!adjacentCoords.length) {
+      adjacentCoords = this.getAdjacentCoords(this.aiInitialHitCoord);
       this.aiCoordTracker = null;
-      validAdjacentCoords = adjacentCoord.filter((coord) =>
+      adjacentCoords = adjacentCoords.filter((coord) =>
         Player.filterInvalidCoords(coord, player)
       );
     }
 
-    return validAdjacentCoords;
+    return adjacentCoords;
   }
 
   makeAdjacentAttack(player) {
