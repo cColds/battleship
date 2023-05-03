@@ -18,6 +18,10 @@ export default class Gameboard {
       ? col + ship.length - 1
       : row + ship.length - 1;
 
+  getCell([row, col]) {
+    return this.board[row][col];
+  }
+
   areAllShipsSunk = () => this.ships.every((ship) => ship.isSunk());
 
   resetGameboard() {
@@ -67,8 +71,7 @@ export default class Gameboard {
     if (
       Gameboard.isOutOfBounds([row, col]) ||
       (this.board[row][col] && this.board[row][col].isSunk()) ||
-      isCoordFound(this.shotsMissed, [row, col]) ||
-      isCoordFound(this.shotsHit, [row, col])
+      isCoordFound(this.attackLog, [row, col])
     )
       return false;
 

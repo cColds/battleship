@@ -18,26 +18,17 @@ export default class Player {
       this.submarine,
       this.destroyer,
     ];
-    this.aiInitialShipHitCoord = null;
+    this.aiInitialHitCoord = null;
+    this.aiShipOrientationTracker = null;
+    this.aiCoordTracker = null;
   }
 
   static getRandomInt = (max) => Math.floor(Math.random() * max);
 
-  /* Randomize array in-place using Durstenfeld shuffle algorithm */
-  static shuffleArray(array) {
-    const newArray = [...array];
-    for (let i = array.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-    }
-
-    return newArray;
-  }
-
   static getRandomOrientation = () =>
     Player.getRandomInt(2) === 0 ? "horizontal" : "vertical";
 
-  static getRandomValidCoords = (validCoords) =>
+  static getRandomValidCoord = (validCoords) =>
     validCoords[Player.getRandomInt(validCoords.length)];
 
   resetShipsPlaced() {
@@ -53,8 +44,7 @@ export default class Player {
   randomizeShips() {
     this.gameboard.resetGameboard();
 
-    const randomShips = Player.shuffleArray(this.shipsToPlace);
-    randomShips.forEach((ship) => {
+    this.shipsToPlace.forEach((ship) => {
       const validCoords = [];
       const randomOrientation = Player.getRandomOrientation();
       for (let row = 0; row < 10; row += 1) {
@@ -67,7 +57,7 @@ export default class Player {
         }
       }
 
-      const [randomX, randomY] = Player.getRandomValidCoords(validCoords);
+      const [randomX, randomY] = Player.getRandomValidCoord(validCoords);
       this.gameboard.placeShip(ship, [randomX, randomY], randomOrientation);
     });
   }
@@ -92,77 +82,118 @@ export default class Player {
     return enemy.gameboard.receiveAttack([row, col]);
   }
 
-  static getValidAdjacentCells([row, col], player) {
-    const adjacentCells = [
+  static isHit([targetRow, targetCol], player) {
+    return player.gameboard.shotsHit.some(
+      ([row, col]) => row === targetRow && col === targetCol
+    );
+  }
+
+  static getRandomValidCoords = (validCoords) =>
+    validCoords[Player.getRandomInt(validCoords.length)];
+
+  getAdjacentCoords([row, col]) {
+    if (this.aiShipOrientationTracker === "horizontal") {
+      return [
+        [row, col + 1],
+        [row, col - 1],
+      ];
+    }
+
+    if (this.aiShipOrientationTracker === "vertical")
+      return [
+        [row + 1, col],
+        [row - 1, col],
+      ];
+
+    return [
       [row + 1, col],
       [row - 1, col],
       [row, col + 1],
       [row, col - 1],
     ];
-
-    return adjacentCells.filter(([adjRow, adjCol]) => {
-      const isAlreadyAttacked = isCoordFound(player.gameboard.attackLog, [
-        adjRow,
-        adjCol,
-      ]);
-
-      return (
-        !player.gameboard.constructor.isOutOfBounds([adjRow, adjCol]) &&
-        !isAlreadyAttacked
-      );
-    });
   }
 
-  static isLatestAttackHit(player) {
-    return isCoordFound(
-      player.gameboard.shotsHit,
-      player.gameboard.attackLog.at(-1)
+  getAiOrientationTracker(player) {
+    const [currRow] = player.gameboard.shotsHit.at(-1);
+    const [initRow] = this.aiInitialHitCoord;
+
+    return currRow === initRow ? "horizontal" : "vertical";
+  }
+
+  updateAiState(player) {
+    const [initRow, initCol] = this.aiInitialHitCoord;
+    const originalShip = player.gameboard.board[initRow][initCol];
+    const isSameShip = player.gameboard.board[initRow][initCol];
+    // if is different ship or cell is null (dead end)
+    if (originalShip !== isSameShip || isSameShip === null) {
+      this.aiCoordTracker = null;
+    }
+    // if hit twice on the same ship, we know the orientation. also make sure this.aiShipOrientationTracker isn't set
+    if (originalShip.timesHit === 2 && this.aiShipOrientationTracker === null) {
+      this.aiShipOrientationTracker = this.getAiOrientationTracker(player);
+    }
+    // reset ai state back to random
+    if (originalShip.isSunk()) {
+      this.aiInitialHitCoord = null;
+      this.aiCoordTracker = null;
+      this.aiShipOrientationTracker = null;
+    }
+  }
+
+  static filterInvalidCoords(coord, player) {
+    const isAlreadyAttacked = isCoordFound(player.gameboard.attackLog, coord);
+    return !Gameboard.isOutOfBounds(coord) && !isAlreadyAttacked;
+  }
+
+  getValidAdjacentCoords(player) {
+    let adjacentCoord;
+    const lastAttack = player.gameboard.attackLog.at(-1);
+    const isLastAttackHit = Player.isHit(lastAttack, player);
+    if (!isLastAttackHit) {
+      adjacentCoord = this.getAdjacentCoords(this.aiInitialHitCoord);
+      this.aiCoordTracker = null;
+    } else {
+      this.aiCoordTracker = player.gameboard.shotsHit.at(-1);
+      adjacentCoord = this.getAdjacentCoords(this.aiCoordTracker);
+    }
+
+    let validAdjacentCoords = adjacentCoord.filter((coord) =>
+      Player.filterInvalidCoords(coord, player)
     );
+
+    if (!adjacentCoord.length) {
+      adjacentCoord = this.getAdjacentCoords(this.aiInitialHitCoord);
+      this.aiCoordTracker = null;
+      validAdjacentCoords = adjacentCoord.filter((coord) =>
+        Player.filterInvalidCoords(coord, player)
+      );
+    }
+
+    return validAdjacentCoords;
+  }
+
+  makeAdjacentAttack(player) {
+    const coords = Player.getRandomValidCoords(
+      this.getValidAdjacentCoords(player)
+    );
+
+    player.gameboard.receiveAttack(coords);
+    this.updateAiState(player);
   }
 
   makeAiAttack(player) {
-    if (this.aiInitialShipHitCoord || Player.isLatestAttackHit(player)) {
-      const [row, col] = player.gameboard.shotsHit.at(-1);
-      const cell = player.gameboard.board[row][col];
-
-      if (!cell.isSunk()) {
-        let adjacentCells;
-
-        if (
-          isCoordFound(
-            player.gameboard.shotsMissed,
-            player.gameboard.attackLog.at(-1)
-          )
-        ) {
-          adjacentCells = Player.getValidAdjacentCells(
-            this.aiInitialShipHitCoord,
-            player
-          );
-        } else {
-          adjacentCells = Player.getValidAdjacentCells(
-            player.gameboard.attackLog.at(-1),
-            player
-          );
-        }
-
-        const randomAdjacentCoord =
-          adjacentCells[Player.getRandomInt(adjacentCells.length - 1)];
-
-        player.gameboard.receiveAttack(randomAdjacentCoord);
-        if (cell.isSunk()) {
-          this.aiInitialShipHitCoord = null;
-        } else if (!this.aiInitialShipHitCoord) {
-          this.aiInitialShipHitCoord = [row, col];
-        }
-
-        return;
-      }
+    if (this.aiInitialHitCoord) {
+      this.makeAdjacentAttack(player);
+      return;
     }
 
-    const randomValidCoord = Player.getRandomValidCoords(
+    const randomValidCoord = Player.getRandomValidCoord(
       Player.getValidCoords(player)
     );
 
     player.gameboard.receiveAttack(randomValidCoord);
+    if (Player.isHit(randomValidCoord, player)) {
+      this.aiInitialHitCoord = randomValidCoord;
+    }
   }
 }

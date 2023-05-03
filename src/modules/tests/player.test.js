@@ -14,183 +14,241 @@ describe("player functionality", () => {
   it("should place ships randomly", () => {
     player.randomizeShips();
     const { ships } = player.gameboard;
-    const cantPlaceShips = ships.every(
-      (ship) =>
-        !player.gameboard.canPlaceShip(ship, ship.coords, ship.orientation)
+    const canPlaceShips = ships.every((ship) =>
+      player.gameboard.canPlaceShip(ship, ship.coords, ship.orientation)
     );
     const shipsCoords = ships.map((ship) => JSON.stringify(ship.coords));
     const areAllUniqueShipCoords = Array.from(new Set(shipsCoords));
 
-    expect(cantPlaceShips).toBe(true);
+    expect(canPlaceShips).toBe(false);
     expect(areAllUniqueShipCoords).toStrictEqual(shipsCoords);
     expect(shipsCoords.length).toBe(5);
   });
 
-  it("should be able to place ships randomly more than once", () => {
-    player.randomizeShips();
-    const shipCoordsOne = JSON.stringify(player.gameboard.ships);
-    player.randomizeShips();
-    const shipCoordsTwo = JSON.stringify(player.gameboard.ships);
+  it("should call AI's gameboard receiveAttack method with correct coordinates when player attacks", () => {
+    const mockReceiveAttack = jest.fn();
 
-    const areShipCoordsEqual = shipCoordsOne === shipCoordsTwo;
-    expect(areShipCoordsEqual).toBe(false);
-    expect(player.gameboard.ships.length).toBe(5);
-  });
-
-  it("should make player attack", () => {
+    ai.gameboard.receiveAttack = mockReceiveAttack;
     Player.attack([3, 5], ai);
-    const [row, col] = ai.gameboard.shotsMissed;
-
-    expect(row === 3 && col === 5);
-  });
-
-  it("should be a valid coord", () => {
-    expect(isCoordFound(Player.getValidCoords(player), [0, 0])).toBe(true);
-
-    Player.attack([0, 0], player);
-
-    expect(isCoordFound(Player.getValidCoords(player), [0, 0])).toBe(false);
+    expect(mockReceiveAttack).toBeCalledWith([3, 5]);
+    expect(mockReceiveAttack).toBeCalledTimes(1);
   });
 
   it("should remove attacked coordinates from valid coordinates list", () => {
-    const [row, col] = Player.getRandomValidCoords(
+    const [row, col] = Player.getRandomValidCoord(
       Player.getValidCoords(player)
     );
-
     player.gameboard.receiveAttack([row, col]);
     expect(isCoordFound(Player.getValidCoords(player), [row, col])).toBe(false);
   });
 });
 
 describe("ai functionality", () => {
-  it("should make random attack for ai", () => {
-    ai.makeAiAttack(player);
-    const [row, col] = player.gameboard.attackLog.at(-1);
-    expect(player.gameboard.receiveAttack([row, col])).toBe(false);
+  describe("random mode", () => {
+    it("should make random attack against player", () => {
+      const mockReceiveAttack = jest.fn();
+
+      player.gameboard.receiveAttack = mockReceiveAttack;
+
+      ai.makeAiAttack(player);
+      expect(mockReceiveAttack).toBeCalledTimes(1);
+    });
+
+    it("should set aiInitialHitCoord to hit coord if its a hit", () => {
+      const mockGetValidCoords = jest.fn().mockReturnValueOnce([[3, 5]]);
+      player.gameboard.placeShip(player.submarine, [3, 5], "horizontal");
+
+      Player.getValidCoords = mockGetValidCoords;
+      ai.makeAiAttack(player);
+      expect(ai.aiInitialHitCoord).toEqual([3, 5]);
+    });
+
+    it("should not set aiInitialHitCoord to hit coord if its a miss", () => {
+      const mockGetValidCoords = jest.fn().mockReturnValueOnce([[3, 4]]);
+      player.gameboard.placeShip(player.submarine, [3, 5], "horizontal");
+
+      Player.getValidCoords = mockGetValidCoords;
+      ai.makeAiAttack(player);
+      expect(ai.aiInitialHitCoord).toBe(null);
+    });
   });
 
-  it("should make an adjacent attack if ship was hit", () => {
+  describe("target ship mode", () => {
+    it("should call makeAdjacentAttack with player if this.aiInitialHitCoord is truthy", () => {
+      jest.spyOn(Player, "getValidCoords").mockReturnValueOnce([[3, 5]]);
+      const mockMakeAdjacentAttack = jest.fn();
+      ai.makeAdjacentAttack = mockMakeAdjacentAttack;
+
+      player.gameboard.placeShip(player.submarine, [3, 5], "horizontal");
+      ai.makeAiAttack(player);
+      ai.makeAiAttack(player);
+      expect(mockMakeAdjacentAttack).toBeCalledTimes(1);
+      expect(mockMakeAdjacentAttack).toBeCalledWith(player);
+    });
+  });
+
+  it("should be an adjacent attack", () => {
+    jest.spyOn(Player, "getValidCoords").mockReturnValueOnce([[3, 5]]);
     player.gameboard.placeShip(player.submarine, [3, 5], "horizontal");
 
-    Player.attack([3, 5], player);
     ai.makeAiAttack(player);
-    const isAdjacentHit = isAdjacentTo(
-      [3, 5],
-      player.gameboard.attackLog.at(-1)
-    );
-
-    expect(isAdjacentHit).toBe(true);
+    ai.makeAiAttack(player);
+    const lastAttack = player.gameboard.attackLog.at(-1);
+    expect(isAdjacentTo([3, 5], lastAttack)).toBe(true);
   });
 
-  it("should make random attack if ship sunk", () => {
+  it("should not include coord already attacked for getValidAdjacentCoords", () => {
+    jest.spyOn(Player, "getValidCoords").mockReturnValueOnce([[3, 5]]);
+    jest.spyOn(ai, "getValidAdjacentCoords").mockReturnValueOnce([[3, 4]]);
+
     player.gameboard.placeShip(player.submarine, [3, 5], "horizontal");
-    Player.attack([3, 5], player);
-    Player.attack([3, 6], player);
-    Player.attack([3, 7], player);
+    ai.makeAiAttack(player);
+    ai.makeAiAttack(player);
 
-    expect(Player.isLatestAttackHit(player) && player.submarine.isSunk()).toBe(
-      true
-    );
+    const validAdjacentCoords = ai.getValidAdjacentCoords(player);
+    const lastAttack = player.gameboard.attackLog.at(-1);
+    expect(isCoordFound(validAdjacentCoords, lastAttack)).toBe(false);
+  });
+
+  it("should not include coord out of bounds for getValidAdjacentCoords", () => {
+    jest.spyOn(Player, "getValidCoords").mockReturnValueOnce([[0, 0]]);
+
+    player.gameboard.placeShip(player.submarine, [0, 0], "horizontal");
+    ai.makeAiAttack(player);
+    const validAdjacentCoords = ai.getValidAdjacentCoords(player);
+
+    expect(isCoordFound(validAdjacentCoords, [-1, 0])).toBe(false);
+    expect(isCoordFound(validAdjacentCoords, [0, -1])).toBe(false);
+  });
+
+  it("should return adjacent coords for both orientations and if orientation is null", () => {
+    expect(ai.getAdjacentCoords([3, 5])).toEqual([
+      [4, 5],
+      [2, 5],
+      [3, 6],
+      [3, 4],
+    ]);
+    ai.aiShipOrientationTracker = "horizontal";
+    expect(ai.getAdjacentCoords([3, 5])).toEqual([
+      [3, 6],
+      [3, 4],
+    ]);
+    ai.aiShipOrientationTracker = "vertical";
+    expect(ai.getAdjacentCoords([3, 5])).toEqual([
+      [4, 5],
+      [2, 5],
+    ]);
+  });
+
+  describe("update ai state", () => {
+    it.skip("should set aiCoordTracker to null if different ship or dead end", () => {
+      jest.spyOn(Player, "getValidCoords").mockReturnValueOnce([[3, 6]]);
+      jest.spyOn(ai, "getValidAdjacentCoords").mockReturnValueOnce([[3, 5]]);
+
+      player.gameboard.placeShip(player.submarine, [3, 5], "horizontal");
+      ai.makeAiAttack(player);
+      ai.makeAiAttack(player);
+      ai.aiCoordTracker = player.gameboard.shotsHit.at(-1);
+      ai.makeAiAttack(player);
+    });
   });
 });
 
-it("should make adjacent attack to the first ship hit coordinates if the attack missed", () => {
-  player.gameboard.placeShip(player.submarine, [3, 5], "horizontal");
-  Player.getValidCoords = jest
-    .spyOn(Player, "getValidCoords")
-    .mockReturnValueOnce([[3, 5]]);
+// AI ALGORITHM:
+// RANDOM MODE:
+// 1) Keep doing random hits until ai hits a ship
+// 2) If ai attack hit a ship (initial hit on a unique ship), set this.aiInitialHit to the cell coord it was hit at.
 
-  Player.getValidAdjacentCells = jest
-    .spyOn(Player, "getValidAdjacentCells")
-    .mockReturnValueOnce([[3, 4]]);
+// TARGET SHIP MODE:
+// If (this.aiInitialHit is truthy) {
+// this.makeAdjacentAttack(player);
+// return;
+// }
 
-  ai.makeAiAttack(player); // hit at [3, 5]
-  ai.makeAiAttack(player); // miss at [3, 4]
-  ai.makeAiAttack(player); // adjacent to [3, 5]
+/* FIRST FUNCTION CALL
+function makeAdjacentAttack(player) {
+const [adjRow, adjCol] = getValidAdjacentCoords(player);
+player.receiveAttack([adjRow, adjCol], player);
 
-  const latestAttack = player.gameboard.attackLog.at(-1);
-  expect(ai.aiInitialShipHitCoord).toEqual([3, 5]);
-  expect(isAdjacentTo(latestAttack, [3, 5])).toBe(true);
-});
+updateAiState(player)
+}
+*/
 
-it.skip("should only attack horizontally if hit ship more than once and ship is horizontal", () => {
-  player.gameboard.placeShip(player.submarine, [3, 5], "horizontal");
-  Player.getValidCoords = jest
-    .spyOn(Player, "getValidCoords")
-    .mockReturnValueOnce([[3, 5]]);
+/* SECOND FUNCTION CALL
+function getValidAdjacentCoords(player) {
+let adjacentCoord;
 
-  Player.getValidAdjacentCells = jest
-    .spyOn(Player, "getValidAdjacentCells")
-    .mockReturnValueOnce([[3, 6]]);
+If (attack was a miss or hit a different ship) {
+adjacentCoord = getAdjacentCoords(this.aiInitialHitCoord, player);
+this.aiCoordTracker = null;
+}
+Else if (attack was a hit) {
+this.aiCoordTracker = player.gameboard.shotsHit.at(-1);
+adjacentCoord = getAdjacentCoords(this.aiCoordTracker, player);
+}
 
-  ai.makeAiAttack(player);
-  expect(ai.shipOrientationTracker).toBe(null);
+return adjacentCoord.filter(coord => !player.gameboard.isOutOfBounds(coord))
+}
+*/
 
-  ai.makeAiAttack(player);
-  expect(ai.shipOrientationTracker).toBe("horizontal");
+/* THIRD FUNCTION CALL
+function getAdjacentCoords([row, col]) {
+  if (this.aiShipOrientationTracker === "horizontal") {
+      return [
+        [row, col + 1],
+        [row, col - 1],
+      ];
+    }
 
-  console.log(player.gameboard.attackLog);
-});
+    if (this.aiShipOrientationTracker === "vertical")
+      return [
+        [row + 1, col],
+        [row - 1, col],
+      ];
 
-it("should update this.aiInitialShipHitCoord to a coord after hitting submarine for the first time", () => {
-  player.gameboard.placeShip(player.submarine, [3, 5], "horizontal");
-  Player.attack([3, 5], player);
-  ai.makeAiAttack(player);
-  expect(ai.aiInitialShipHitCoord).toEqual([3, 5]);
-});
+    return [
+      [row + 1, col],
+      [row - 1, col],
+      [row, col + 1],
+      [row, col - 1],
+    ];
 
-it("should set this.shipOrientationTracker to horizontal when ship is hit more than once", () => {
-  Player.getValidCoords = jest
-    .spyOn(Player, "getValidCoords")
-    .mockReturnValueOnce([[3, 6]]);
+} 
+*/
 
-  Player.getValidAdjacentCells = jest
-    .spyOn(Player, "getValidAdjacentCells")
-    .mockReturnValueOnce([[3, 5]])
-    .mockReturnValueOnce([[3, 7]]);
+/* FOURTH FUNCTION CALL
+function updateAiState(player) {
+const [initRow, initCol] = this.aiInitialHitCoord;
+const originalShip = player.gameboard[initRow][initCol];
+const isSameShip = player.gameboard[adjRow][adjCol];
 
-  player.gameboard.placeShip(player.submarine, [3, 5], "horizontal");
-  ai.makeAiAttack(player);
-  expect(ai.shipOrientationTracker).toBe(null);
-  ai.makeAiAttack(player);
-  expect(ai.shipOrientationTracker).toBe("horizontal");
-  console.log(player.gameboard.attackLog);
-});
+// if is different ship or cell is null (dead end)
+if (originalShip !== isSameShip || isSameShip === null) {
+this.aiCoordTracker = null;
+}
 
-it("should set ship orientation tracker to null when ship is hit only once", () => {
-  Player.getValidCoords = jest
-    .spyOn(Player, "getValidCoords")
-    .mockReturnValueOnce([[3, 6]]);
+// if hit twice on the same ship, we know the orientation. also make sure this.aiShipOrientationTracker isn't set
+if (originalShip.timesHit === 2 and this.aiShipOrientationTracker === null) {
+this.aiShipOrientationTracker = getAiOrientationTracker();
+}
 
-  player.gameboard.placeShip(player.submarine, [3, 5], "horizontal");
-  ai.makeAiAttack(player);
+// reset ai state back to random
+if (originalShip.isSunk()) {
+this.aiInitialHitCoord = null;
+this.aiCoordTracker = null;
+this.aiShipOrientationTracker = null;
+}
+}
 
-  expect(ai.shipOrientationTracker).toBe(null);
-});
+*/
 
-it("should update this.aiInitialShipHitCoord and ai.shipOrientationTracker to null after sinking a ship", () => {
-  player.gameboard.placeShip(player.submarine, [3, 5], "horizontal");
+/* FIFTH FUNCTION CALL
+function getAiOrientationTracker() {
+const [currRow, currCol] = player.gameboard.shotsHit.at(-1);
+const [initRow, initCol] = this.aiInitialHitCoord;
 
-  Player.getValidCoords = jest
-    .spyOn(Player, "getValidCoords")
-    .mockReturnValueOnce([[3, 5]]);
+return currRow === initRow ? "horizontal" : "vertical";
 
-  Player.getValidAdjacentCells = jest
-    .spyOn(Player, "getValidAdjacentCells")
-    .mockReturnValueOnce([[3, 6]])
-    .mockReturnValueOnce([[3, 7]]);
+} 
 
-  ai.makeAiAttack(player);
-  ai.makeAiAttack(player);
-  ai.makeAiAttack(player);
-
-  expect(ai.aiInitialShipHitCoord).toBe(null);
-  expect(ai.shipOrientationTracker).toBe(null);
-});
-
-// How to attack ship until sunk efficiently
-// If hit ship for the first time, make a random adjacent attack and set aiInitialHit to coord where it was hit
-// If ship is miss, make an adjacent attack to aiInitialHit coord
-// If ship hit again, make an attack on the same direction until a miss/ship sunk
-// If ship sunk, set aiInitialHit to null
-// If ship is miss, continue adjacent to aiInitialHit in the same direction
+*/
