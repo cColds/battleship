@@ -25,4 +25,4 @@
 
 # Thoughts
 
-Testing is arduous; it was definitely the biggest hurdle of all, especially mocks, for me. I made many mistakes with my code structure and game logic and had to refactor my code a lot. I should spend more time planning, I think. I probably spent ~30-40 hours (albeit not very efficient) on this project.
+Testing is arduous; it was definitely the biggest hurdle of all, especially mocks. I also made many mistakes with my code structure and game logic and had to refactor my code a lot, so I should spend more time planning. I probably spent ~30-40 hours (albeit not very efficient) on this project.
