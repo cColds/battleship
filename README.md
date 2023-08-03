@@ -1,6 +1,7 @@
 # Battleship
 
 # [Live Preview](https://ccolds.github.io/battleship/)
+![battleship](https://github.com/cColds/battleship/assets/103373668/9e6302df-974a-4536-8452-366fb1a2913a)
 
 # Tools & Technologies
 
@@ -12,7 +13,7 @@
 
 # Features
 
-- Improved AI accuracy when it hits a cell (attacks adjacent cells and stores orientation).
+- Improved AI accuracy when it hits a cell (attacks adjacent cells).
 - Denote when a ship sinks.
 - Rotate ship
 - Randomize ships
@@ -20,9 +21,5 @@
 
 # What I learned
 
-- Testing with Jest.
+- Test Driven Development (TDD) using Jest.
 - SCSS
-
-# Thoughts
-
-Testing is arduous; it was definitely the biggest hurdle of all, especially mocks. I also made many mistakes with my code structure and game logic and had to refactor my code a lot, so I should spend more time planning. I probably spent ~30-40 hours (albeit not very efficient) on this project.
